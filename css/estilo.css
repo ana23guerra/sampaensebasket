@@ -816,6 +816,7 @@ section + section { border-top: 1px solid var(--linha); }
 .campo-armadilha { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .form-socio .campo-rgpd { display: flex; flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 500; font-size: 13px; line-height: 1.5; letter-spacing: 0; color: var(--texto-suave); cursor: pointer; }
 .form-socio .campo-rgpd input { width: auto; margin-top: 3px; flex-shrink: 0; }
+
 /* ---------- História: aba escondida (cola no FIM do estilo.css) ---------- */
 #historia { display: none; background: var(--verde-luz); padding: 64px 0; }
 #historia.aberta { display: block; }
@@ -852,3 +853,27 @@ section + section { border-top: 1px solid var(--linha); }
   .historia-ano { min-width: 0; }
 }
 .historia-secundario { border-top-color: var(--linha); }
+
+/* ---------- Arquivo: carrossel (cola no FIM do estilo.css) ---------- */
+.carrossel { position: relative; }
+.carrossel-pista {
+  display: flex; gap: 6px; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; -ms-overflow-style: none; cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+.carrossel-pista::-webkit-scrollbar { display: none; }
+.carrossel-pista.a-arrastar { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+.carrossel-pista .foto { flex: 0 0 calc((100% - 18px) / 4); scroll-snap-align: start; border-radius: 8px; }
+.carrossel-pista .foto img { user-select: none; -webkit-user-drag: none; }
+.carrossel-seta {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+  width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--amarelo); color: #241C00; font-size: 18px; font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.45); transition: opacity 0.2s, transform 0.2s;
+}
+.carrossel-seta:hover { transform: translateY(-50%) scale(1.08); }
+.carrossel-seta:disabled { opacity: 0.25; cursor: default; transform: translateY(-50%); }
+.carrossel-seta.anterior { left: 8px; }
+.carrossel-seta.seguinte { right: 8px; }
+@media (max-width: 900px) { .carrossel-pista .foto { flex-basis: calc((100% - 6px) / 2); } }
+@media (max-width: 520px) { .carrossel-seta { width: 36px; height: 36px; } }

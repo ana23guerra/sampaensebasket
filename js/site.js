@@ -368,42 +368,84 @@ $('btn-ver-mais').addEventListener('click', () => {
 
 renderizarGaleria();
 
-// ---- Arquivo (fotos antigas) ----
-
-let arquivoExpandido = false;
+// ---- Arquivo (fotos antigas) — carrossel ----
 
 function renderizarArquivo() {
-  const listaEl = $('lista-arquivo');
+  const pista = $('lista-arquivo');
   const botao = $('btn-ver-mais-arquivo');
+  if (!pista || !Array.isArray(DADOS.arquivo)) return;
 
-  if (!listaEl || !Array.isArray(DADOS.arquivo)) return;
+  // O botão "Ver mais fotos" já não faz falta
+  if (botao && botao.parentElement) botao.parentElement.style.display = 'none';
 
-  const fotos = arquivoExpandido ? DADOS.arquivo : DADOS.arquivo.slice(0, FOTOS_INICIAIS);
-
-  listaEl.innerHTML = fotos.length
-    ? fotos.map((f, i) => criarFoto(f, i, 'arquivo')).join('')
-    : '<p style="color:var(--texto-suave);">Ainda não há fotos no arquivo.</p>';
-
-  if (!botao) return;
-
-  // Sem fotos a mais para mostrar: esconde o botão
-  if (DADOS.arquivo.length <= FOTOS_INICIAIS) {
-    botao.parentElement.style.display = 'none';
+  if (!DADOS.arquivo.length) {
+    pista.innerHTML = '<p style="color:var(--texto-suave);">Ainda não há fotos no arquivo.</p>';
     return;
   }
-  botao.parentElement.style.display = '';
-  botao.textContent = arquivoExpandido ? 'Fechar' : 'Ver mais fotos';
-}
 
-const btnVerMaisArquivo = $('btn-ver-mais-arquivo');
-if (btnVerMaisArquivo) {
-  btnVerMaisArquivo.addEventListener('click', () => {
-    arquivoExpandido = !arquivoExpandido;
-    renderizarArquivo();
-    if (!arquivoExpandido) {
-      $('arquivo').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
+  pista.className = 'carrossel-pista';
+  pista.innerHTML = DADOS.arquivo.map((f, i) => criarFoto(f, i, 'arquivo')).join('');
+
+  // Montar setas à volta da pista (só uma vez)
+  if (!pista.parentElement.classList.contains('carrossel')) {
+    const caixa = document.createElement('div');
+    caixa.className = 'carrossel';
+    pista.parentElement.insertBefore(caixa, pista);
+
+    const anterior = document.createElement('button');
+    anterior.type = 'button';
+    anterior.className = 'carrossel-seta anterior';
+    anterior.setAttribute('aria-label', 'Fotos anteriores');
+    anterior.innerHTML = '&#10094;';
+
+    const seguinte = document.createElement('button');
+    seguinte.type = 'button';
+    seguinte.className = 'carrossel-seta seguinte';
+    seguinte.setAttribute('aria-label', 'Fotos seguintes');
+    seguinte.innerHTML = '&#10095;';
+
+    caixa.append(anterior, pista, seguinte);
+
+    const passo = () => pista.clientWidth * 0.9;
+    anterior.addEventListener('click', () => pista.scrollBy({ left: -passo(), behavior: 'smooth' }));
+    seguinte.addEventListener('click', () => pista.scrollBy({ left: passo(), behavior: 'smooth' }));
+
+    const atualizarSetas = () => {
+      const max = pista.scrollWidth - pista.clientWidth - 2;
+      anterior.disabled = pista.scrollLeft <= 2;
+      seguinte.disabled = pista.scrollLeft >= max;
+    };
+    pista.addEventListener('scroll', atualizarSetas, { passive: true });
+    window.addEventListener('resize', atualizarSetas);
+    setTimeout(atualizarSetas, 100);
+
+    // Arrastar com o rato (no telemóvel o arrastar já funciona sozinho)
+    let aArrastar = false, moveu = false, inicioX = 0, inicioScroll = 0;
+    pista.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      aArrastar = true; moveu = false;
+      inicioX = e.clientX; inicioScroll = pista.scrollLeft;
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!aArrastar) return;
+      const dx = e.clientX - inicioX;
+      if (Math.abs(dx) > 5) {
+        moveu = true;
+        pista.classList.add('a-arrastar');
+      }
+      pista.scrollLeft = inicioScroll - dx;
+    });
+    window.addEventListener('pointerup', () => {
+      if (!aArrastar) return;
+      aArrastar = false;
+      pista.classList.remove('a-arrastar');
+    });
+    // Se arrastou, não abrir a foto por engano
+    pista.addEventListener('click', (e) => {
+      if (moveu) { e.stopPropagation(); e.preventDefault(); moveu = false; }
+    }, true);
+    pista.addEventListener('dragstart', (e) => e.preventDefault());
+  }
 }
 
 renderizarArquivo();
@@ -958,6 +1000,19 @@ if (location.hash === '#formacao') abrirFormacao();
   if (lista(H.texto).length) {
     html += `<div class="historia-texto">${H.texto.map(p => `<p>${p}</p>`).join('')}</div>`;
   }
+
+  // O clube hoje (automático, a partir do resto do dados.js)
+  const hoje = [];
+  hoje.push(['Clube', C.nomeCompleto]);
+  hoje.push(['Localidade', C.localidade]);
+  if (C.treinador) hoje.push(['Treinador', C.treinador]);
+  if (H.pavilhao && H.pavilhao.nome) hoje.push(['Pavilhão', H.pavilhao.nome]);
+  if (F && lista(F.escaloes).length) hoje.push(['Escalões de formação', String(F.escaloes.length)]);
+  if (DADOS.plantel && DADOS.plantel.length) hoje.push(['Plantel sénior', DADOS.plantel.length + ' jogadores']);
+  html += `
+    <h3 class="historia-titulo">O clube hoje</h3>
+    <div class="jogador-dados historia-hoje">${hoje.map(([k, v]) => `<div><b>${k}</b><span>${v}</span></div>`).join('')}</div>`;
+  if (H.pavilhao && H.pavilhao.texto) html += `<p class="historia-pavilhao">${H.pavilhao.texto}</p>`;
 
   // Títulos
   if (lista(H.titulos).length) {

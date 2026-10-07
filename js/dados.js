@@ -233,16 +233,13 @@ noticias: [
       { nome: "S18",         genero: "Masculino", horarios: { SEG: "19:15–20:30", QUA: "19:30–21:00", SEX: "19:45–21:00" } }
     ]
   },
-// ----------------------------------------------------------------
-  // COLA ESTE BLOCO dentro de DADOS (por exemplo, a seguir ao bloco "formacao").
-  // Atenção à vírgula no fim do bloco anterior.
-  // Só aparece no site o que estiver preenchido.
-  // ----------------------------------------------------------------
+
   historia: {
     intro: "Palmarés e marcos do Sampaense Basket.",
 
     texto: [
       "Ao longo da sua história, o Sampaense Basket construiu um percurso de destaque no basquetebol português, conquistando quatro títulos nacionais e alcançando importantes resultados nas principais competições do país.",
+      "O clube chegou à final da Proliga em quatro épocas consecutivas, entre 2003/04 e 2006/07, conquistando três títulos consecutivos. Em 2008/09 voltou a disputar a final e garantiu a subida à Liga Portuguesa de Basquetebol, onde atingiu o 3.º lugar em 2013/14."
     ],
 
     // Do mais antigo para o mais recente.
@@ -253,6 +250,7 @@ noticias: [
       { ano: "2008/09", titulo: "Finalista da Proliga e subida à Liga", texto: "Vice-campeão da Proliga e subida à Liga Portuguesa de Basquetebol." },
       { ano: "2011/13", titulo: "Duas meias-finais da Taça de Portugal", texto: "Presença na Final 8 da Taça de Portugal em 2011/12 e 2012/13, chegando às meias-finais em ambas." },
       { ano: "2013/14", titulo: "3.º lugar na Liga e final do Troféu António Pratas", texto: "Meias-finais dos playoffs da Liga, terminando em 3.º lugar. No Troféu António Pratas, eliminou o Benfica nas meias-finais e perdeu a final com a Ovarense por 62–65, a primeira final oficial de uma competição da Liga." },
+      { ano: "2026/27", titulo: "Regresso à Proliga", texto: "O Sampaense Basket disputa a Proliga 2026/2027 no escalão sénior." }
     ],
 
     // Títulos nacionais
@@ -276,6 +274,7 @@ noticias: [
     pavilhao: { nome: "Pavilhão Comendador Serafim Marques", texto: "" },
     figuras: []
   },
+
   // Informação da secção "Sócio". Os valores de quotas são exemplos —
   // substitui pelos valores reais definidos pela direção do clube.
   socio: {
