@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sampaense Basket</title>
+<link rel="icon" href="assets/logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilo.css?v=20260930">
+</head>
+<body>
+
+<header id="topo">
+  <div class="nav-inner">
+
+    <a href="#hero" class="marca">
+      <img src="assets/logo.jpeg" alt="Emblema Sampaense Basket">
+      <span class="marca-nome">
+        <b>SAMPAENSE BASKET CLUB</b>
+      </span>
+    </a>
+
+    <button
+      id="burger"
+      type="button"
+      onclick="document.getElementById('menu').classList.toggle('aberto')"
+      aria-label="Abrir menu"
+      aria-controls="menu"
+      aria-expanded="false"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.4"
+      >
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    <nav id="menu">
+
+      <a href="#hero">Início</a>
+      <a href="#jogos">Jogos</a>
+      <a href="#plantel">Plantel</a>
+      <a href="#formacao" onclick="abrirFormacao(event)">Formação</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#arquivo">Arquivo</a>
+      <a href="#noticias">Notícias</a>
+      <a href="#socio">Sócio</a>
+      <a href="#parceiros">Parceiros</a>
+      <a href="#contactos">Contactos</a>
+
+    </nav>
+
+  </div>
+</header>
+<section id="hero">
+  <svg class="linhas" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+    <circle cx="640" cy="120" r="220" fill="none" stroke="#fff" stroke-width="2"/>
+    <line x1="640" y1="-100" x2="640" y2="340" stroke="#fff" stroke-width="2"/>
+    <circle cx="80" cy="420" r="140" fill="none" stroke="#fff" stroke-width="2"/>
+  </svg>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker">CLUBE DE BASQUETEBOL · OLIVEIRA DO HOSPITAL</p>
+      <h1 class="display">A força<br>do interior.</h1>
+      <p class="lead">Notícias, calendário de jogos, plantel e a galeria do Sampaense Basket — tudo num só sítio, atualizado a cada jornada.</p>
+      <div class="botoes">
+        <a href="#jogos" class="btn btn-amarelo">Ver calendário</a>
+        <a href="#plantel" class="btn btn-contorno">Conhecer o plantel</a>
+      </div>
+    </div>
+    <div class="placar" id="placar">
+      <div class="placar-topo"><span>PRÓXIMO JOGO</span><em id="placar-competicao"></em></div>
+      <div class="equipas">
+        <div class="equipa">
+          <div class="escudo-mini" id="escudo-sampaense"></div>
+          <span class="nome">Sampaense</span>
+        </div>
+        <span class="vs display">VS</span>
+        <div class="equipa">
+          <div class="escudo-mini" id="escudo-adversario"></div>
+          <span class="nome" id="nome-adversario"></span>
+        </div>
+      </div>
+      <div class="placar-info">
+        <div><b>DATA</b><span id="info-data"></span></div>
+        <div><b>HORA</b><span id="info-hora"></span></div>
+        <div><b>LOCAL</b><span id="info-local"></span></div>
+        <div><b>PAVILHÃO</b><span id="info-pavilhao"></span></div>
+      </div>
+      <div id="contagem"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="forma">
+      <span class="rotulo">FORMA RECENTE</span>
+      <div id="forma-pilulas" style="display:flex; gap:8px;"></div>
+    </div>
+  </div>
+</section>
+
+<section id="jogos">
+  <div class="wrap">
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">JOGOS</h2>
+        <p>Calendário e resultados da Proliga 2026/2027.</p>
+      </div>
+      <div class="abas">
+        <button class="ativa" onclick="mudarAba('proximos', this)">Próximos</button>
+        <button onclick="mudarAba('resultados', this)">Resultados</button>
+      </div>
+    </div>
+    <div id="lista-jogos" class="lista-jogos"></div>
+  </div>
+</section>
+
+<section id="plantel">
+  <div class="wrap">
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">PLANTEL</h2>
+        <p>Equipa sénior masculina 2026/2027, orientada pelo treinador Cláudio Figueiredo e Alexandre Fernandes.</p>
+      </div>
+    </div>
+    <div id="filtro-posicao"></div>
+    <div id="lista-plantel" class="grelha-plantel"></div>
+  </div>
+</section>
+
+<section id="formacao">
+  <div class="wrap">
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">HORÁRIOS DA FORMAÇÃO</h2>
+        <p id="formacao-intro"></p>
+      </div>
+      <button class="btn btn-amarelo" onclick="fecharFormacao()">Fechar</button>
+    </div>
+    <div class="tabela-formacao-caixa"><table class="tabela-formacao" id="tabela-formacao"></table></div>
+    <p class="nota-dados" id="formacao-local" style="color:var(--texto-suave);"></p>
+  </div>
+</section>
+<section id="galeria">
+  <div class="wrap">
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">GALERIA</h2>
+        <p>Momentos de jogo, treinos e bastidores.</p>
+      </div>
+    </div>
+
+    <div id="lista-galeria" class="grelha-galeria"></div>
+
+    <div class="galeria-acoes">
+      <button id="btn-ver-mais" type="button">VER MAIS</button>
+    </div>
+  </div>
+</section>
+
+<section id="arquivo">
+  <div class="wrap">
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">ARQUIVO</h2>
+        <p>Fotos antigas do clube — a memória do Sampaense ao longo dos anos.</p>
+      </div>
+    </div>
+
+    <div id="lista-arquivo" class="grelha-galeria"></div>
+
+    <div class="jogos-acoes">
+      <button id="btn-ver-mais-arquivo" type="button" class="btn-jogos-toggle">Ver mais fotos</button>
+    </div>
+  </div>
+</section>
+
+<section id="noticias">
+  <div class="wrap">
+
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">NOTÍCIAS</h2>
+        <p>O que se passa dentro e fora do pavilhão.</p>
+      </div>
+
+      <div class="estado-noticias" id="estado-noticias">
+        <span class="ponto-online"></span>
+        Atualização automática
+      </div>
+    </div>
+
+    <div id="lista-noticias" class="grelha-noticias"></div>
+
+    <div class="mais-noticias">
+      <button id="btn-ver-mais-noticias" type="button">
+        Ver mais notícias ↓
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<section id="socio">
+  <div class="wrap">
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">TORNA-TE SÓCIO</h2>
+        <p id="socio-intro"></p>
+      </div>
+    </div>
+    <div id="lista-escaloes" class="grelha-escaloes"></div>
+    <p class="nota-dados" id="socio-nota-precos"></p>
+
+    <div class="aviso-pagamento" id="socio-pagamento">
+      <strong id="socio-pagamento-titulo"></strong>
+      <p id="socio-pagamento-texto"></p>
+      <p id="socio-pagamento-local"></p>
+    </div>
+
+    <form id="form-socio" class="form-socio" onsubmit="submeterSocio(event)">
+      <div class="campo">
+        <label for="socio-nome">Nome completo</label>
+        <input id="socio-nome" name="nome" type="text" maxlength="120" required autocomplete="name">
+      </div>
+      <div class="campo">
+        <label for="socio-email">Email</label>
+        <input id="socio-email" name="email" type="email" maxlength="160" required autocomplete="email">
+      </div>
+      <div class="campo">
+        <label for="socio-telefone">Telefone</label>
+        <input id="socio-telefone" name="telefone" type="tel" maxlength="30" autocomplete="tel">
+      </div>
+      <div class="campo">
+        <label for="socio-escalao">Escalão pretendido</label>
+        <select id="socio-escalao" name="escalao"></select>
+      </div>
+      <!-- Honeypot anti-spam: escondido, só os robots o preenchem -->
+      <div class="campo-armadilha" aria-hidden="true">
+        <label for="socio-website">Website</label>
+        <input id="socio-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <label class="campo-rgpd">
+        <input type="checkbox" name="rgpd" value="1" required>
+        <span>Aceito que o Sampaense Basket guarde os meus dados (nome, email e telefone) apenas para tratar da minha inscrição como sócio.</span>
+      </label>
+      <button type="submit" class="btn btn-amarelo" style="align-self:flex-start;">Enviar pré-inscrição</button>
+      <p id="socio-feedback" style="font-size:13.5px; font-weight:700;"></p>
+    </form>
+  </div>
+
+</section>
+<section id="parceiros">
+  <div class="wrap">
+
+    <div class="cabecalho-seccao">
+      <div>
+        <h2 class="display">PARCEIROS &amp; PATROCINADORES</h2>
+      </div>
+    </div>
+
+    <div
+      id="lista-parceiros"
+      class="grelha-parceiros"
+    ></div>
+
+  </div>
+</section>
+
+
+<section id="contactos">
+  <div class="wrap">
+
+    <div class="contactos-casa">
+
+      <!-- CONTACTOS -->
+      <div class="contactos-info">
+
+        <span class="contactos-kicker">
+          SAMPAENSE BASKET
+        </span>
+
+        <h2 class="display">
+          CONTACTOS
+        </h2>
+
+        <p class="contactos-intro">
+          Vem ver um jogo ao vivo ou fala connosco.
+        </p>
+
+        <div class="lista-contactos">
+
+          <div class="linha-contacto" id="linha-morada">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+
+            <span id="contacto-morada"></span>
+          </div>
+
+          <div
+            class="linha-contacto"
+            id="linha-telefone"
+            style="display:none;"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07
+              19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1
+              4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45
+              2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1
+              2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>
+            </svg>
+
+            <a
+              id="contacto-telefone"
+              href="#"
+            ></a>
+          </div>
+
+
+          <div
+            class="linha-contacto"
+            id="linha-email"
+            style="display:none;"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect
+                x="2"
+                y="4"
+                width="20"
+                height="16"
+                rx="2"
+              />
+
+              <path d="m22 7-10 6L2 7"/>
+            </svg>
+
+            <a
+              id="contacto-email"
+              href="#"
+            ></a>
+          </div>
+
+        </div>
+
+
+        <div
+          class="redes"
+          id="redes-sociais"
+        ></div>
+
+      </div>
+
+
+      <!-- A NOSSA CASA -->
+      <div class="casa-info">
+
+        <span class="casa-kicker">
+          A NOSSA CASA
+        </span>
+
+        <h2 class="display">
+          ONDE JOGAMOS
+        </h2>
+
+        <p class="casa-descricao">
+          É aqui que o Sampaense recebe os seus adversários.
+        </p>
+
+        <a
+          class="casa-mapa"
+          href="https://share.google/YPRrOKrTk67Cp2ikm"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir localização no Google Maps"
+        >
+          <div class="mapa-placeholder">
+            <span>📍</span>
+            <strong>ABRIR NO GOOGLE MAPS</strong>
+          </div>
+        </a>
+
+        <div class="casa-morada">
+
+          <strong>
+            Pavilhão Comendador Serafim Marques
+          </strong>
+
+          <span>
+            São Paio de Gramaços, Oliveira do Hospital
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="rodape-fim">
+      <span id="rodape-nome"></span>
+      <span id="rodape-ano"></span>
+    </div>
+
+  </div>
+</section>
+
+<!-- Modal: ficha do jogador -->
+<div id="modal-jogador">
+  <div class="painel">
+    <button type="button" class="fechar" onclick="fecharJogador()">Fechar ✕</button>
+    <div class="cabeca">
+      <div id="modal-jogador-avatar"></div>
+      <div>
+        <div class="jogador-numero" id="modal-jogador-numero"></div>
+        <h3 id="modal-jogador-nome"></h3>
+        <p class="jogador-posicao" id="modal-jogador-posicao"></p>
+      </div>
+    </div>
+    <div class="jogador-dados" id="modal-jogador-dados"></div>
+  </div>
+</div>
+
+<!-- Modal: notícia -->
+<div id="modal-noticia">
+  <div class="painel">
+    <button type="button" class="fechar" onclick="fecharNoticia()">Fechar ✕</button>
+    <span class="data-cat" id="modal-data-cat"></span>
+    <h3 id="modal-titulo"></h3>
+    <p id="modal-texto"></p>
+  </div>
+</div>
+
+<!-- Lightbox: galeria -->
+<div id="lightbox">
+  <div class="caixa">
+    <div class="placeholder-grande" id="lightbox-placeholder">
+      <img id="lightbox-imagem" alt="" style="max-width:100%; max-height:70vh; border-radius:14px; display:none;">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#FFC222" stroke-width="3" id="lightbox-icone">
+        <circle cx="50" cy="50" r="42"/>
+        <path d="M8 50h84M50 8v84M20 20c15 15 15 45 0 60M80 20c-15 15-15 45 0 60" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <p id="lightbox-legenda"></p>
+    <button type="button" class="fechar" onclick="fecharLightbox()">Fechar ✕</button>
+  </div>
+</div>
+
+<script src="js/dados.js?v=20260930"></script>
+<script src="js/site.js?v=20260930"></script>
+</body>
+</html>
