@@ -877,3 +877,18 @@ section + section { border-top: 1px solid var(--linha); }
 .carrossel-seta.seguinte { right: 8px; }
 @media (max-width: 900px) { .carrossel-pista .foto { flex-basis: calc((100% - 6px) / 2); } }
 @media (max-width: 520px) { .carrossel-seta { width: 36px; height: 36px; } }
+/* ---------- Jogos: carrossel de 4 em 4 (cola no FIM do estilo.css) ---------- */
+.carrossel-jogos { gap: 0; }
+.carrossel-jogos .jogos-pagina {
+  flex: 0 0 100%; scroll-snap-align: start; box-sizing: border-box;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.jogos-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 18px; }
+.jogos-contador { font-weight: 800; font-size: 13.5px; color: var(--texto-suave); min-width: 48px; text-align: center; }
+.jogos-seta {
+  width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--amarelo); color: #241C00; font-size: 16px; font-weight: 800;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25); transition: opacity 0.2s, transform 0.2s;
+}
+.jogos-seta:hover { transform: scale(1.08); }
+.jogos-seta:disabled { opacity: 0.25; cursor: default; transform: none; }

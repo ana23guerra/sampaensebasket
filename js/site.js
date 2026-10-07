@@ -38,7 +38,6 @@ $('redes-sociais').innerHTML = redesHtml;
 
 let jogosAtuais = Array.isArray(DADOS.jogos) ? [...DADOS.jogos] : [];
 let abaJogosAtiva = 'proximos';
-let jogosExpandido = false;
 const LIMITE_JOGOS_VISIVEIS = 4;
 let intervaloContagem;
 
@@ -132,33 +131,84 @@ function criarLinhaJogo(j) {
 function renderizarListaJogos() {
   const { proximos, terminados } = jogosOrdenados();
   const jogosFiltrados = abaJogosAtiva === 'proximos' ? proximos : terminados;
+  const pista = $('lista-jogos');
 
-  const jogosMostrados = jogosExpandido
-    ? jogosFiltrados
-    : jogosFiltrados.slice(0, LIMITE_JOGOS_VISIVEIS);
+  // Prepara o carrossel (só uma vez): pista + controlos por baixo
+  if (!pista.parentElement.classList.contains('carrossel-jogos-caixa')) montarCarrosselJogos(pista);
+  pista.className = 'carrossel-pista carrossel-jogos';
 
-  let html = jogosMostrados.length
-    ? jogosMostrados.map(criarLinhaJogo).join('')
-    : '<p style="color:var(--texto-suave);">Sem jogos para mostrar.</p>';
-
-  if (jogosFiltrados.length > LIMITE_JOGOS_VISIVEIS) {
-    html += jogosExpandido
-      ? `<div class="jogos-acoes"><button type="button" class="btn-jogos-toggle" onclick="fecharJogosExtra()">Fechar </button></div>`
-      : `<div class="jogos-acoes"><button type="button" class="btn-jogos-toggle" onclick="abrirJogosExtra()">Ver mais jogos </button></div>`;
+  if (!jogosFiltrados.length) {
+    pista.innerHTML = '<p style="color:var(--texto-suave);">Sem jogos para mostrar.</p>';
+  } else {
+    // Cada "página" tem 4 jogos; arrasta para o lado para ver as seguintes
+    let html = '';
+    for (let i = 0; i < jogosFiltrados.length; i += LIMITE_JOGOS_VISIVEIS) {
+      html += `<div class="jogos-pagina">${jogosFiltrados.slice(i, i + LIMITE_JOGOS_VISIVEIS).map(criarLinhaJogo).join('')}</div>`;
+    }
+    pista.innerHTML = html;
   }
-
-  $('lista-jogos').innerHTML = html;
+  pista.scrollLeft = 0;
+  if (pista._atualizarControlos) pista._atualizarControlos();
 }
 
-function abrirJogosExtra() {
-  jogosExpandido = true;
-  renderizarListaJogos();
-}
+function montarCarrosselJogos(pista) {
+  const caixa = document.createElement('div');
+  caixa.className = 'carrossel-jogos-caixa';
+  pista.parentElement.insertBefore(caixa, pista);
 
-function fecharJogosExtra() {
-  jogosExpandido = false;
-  renderizarListaJogos();
-  $('jogos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const controlos = document.createElement('div');
+  controlos.className = 'jogos-nav';
+  const anterior = document.createElement('button');
+  anterior.type = 'button';
+  anterior.className = 'jogos-seta';
+  anterior.setAttribute('aria-label', 'Jogos anteriores');
+  anterior.innerHTML = '&#10094;';
+  const contador = document.createElement('span');
+  contador.className = 'jogos-contador';
+  const seguinte = document.createElement('button');
+  seguinte.type = 'button';
+  seguinte.className = 'jogos-seta';
+  seguinte.setAttribute('aria-label', 'Jogos seguintes');
+  seguinte.innerHTML = '&#10095;';
+  controlos.append(anterior, contador, seguinte);
+  caixa.append(pista, controlos);
+
+  const passo = () => pista.clientWidth;
+  anterior.addEventListener('click', () => pista.scrollBy({ left: -passo(), behavior: 'smooth' }));
+  seguinte.addEventListener('click', () => pista.scrollBy({ left: passo(), behavior: 'smooth' }));
+
+  const atualizar = () => {
+    const paginas = pista.querySelectorAll('.jogos-pagina').length;
+    const atual = Math.min(paginas, Math.round(pista.scrollLeft / Math.max(1, pista.clientWidth)) + 1);
+    const max = pista.scrollWidth - pista.clientWidth - 2;
+    controlos.style.display = paginas > 1 ? '' : 'none';
+    contador.textContent = atual + ' / ' + paginas;
+    anterior.disabled = pista.scrollLeft <= 2;
+    seguinte.disabled = pista.scrollLeft >= max;
+  };
+  pista._atualizarControlos = atualizar;
+  pista.addEventListener('scroll', atualizar, { passive: true });
+  window.addEventListener('resize', atualizar);
+
+  // Arrastar com o rato (no telemóvel o arrastar já funciona sozinho)
+  let aArrastar = false, inicioX = 0, inicioScroll = 0;
+  pista.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    aArrastar = true;
+    inicioX = e.clientX; inicioScroll = pista.scrollLeft;
+  });
+  window.addEventListener('pointermove', (e) => {
+    if (!aArrastar) return;
+    const dx = e.clientX - inicioX;
+    if (Math.abs(dx) > 5) pista.classList.add('a-arrastar');
+    pista.scrollLeft = inicioScroll - dx;
+  });
+  window.addEventListener('pointerup', () => {
+    if (!aArrastar) return;
+    aArrastar = false;
+    pista.classList.remove('a-arrastar');
+  });
+  pista.addEventListener('dragstart', (e) => e.preventDefault());
 }
 
 function renderizarJogos() {
@@ -171,7 +221,6 @@ function mudarAba(qual, botao) {
   document.querySelectorAll('.abas button').forEach(b => b.classList.remove('ativa'));
   botao.classList.add('ativa');
   abaJogosAtiva = qual;
-  jogosExpandido = false;
   renderizarListaJogos();
 }
 
