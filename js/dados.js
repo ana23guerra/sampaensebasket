@@ -43,7 +43,7 @@ plantel: [
 
   { numero: "2", nome: "Markus Terry", posicao: "Base", foto: "assets/jogadores/markus.jpeg", nacionalidade: "Americana", origem: "Geórgia", ultimoClube: "Sampaense Basket", altura: "188cm" },
 
-  { numero: "3", nome: "Tiago Espada", posicao: "Extremo", foto: "", nacionalidade: "Portuguesa", origem: "Figueira da Foz", ultimoClube: "Ginásio Clube Figueirense", altura: "178cm" },
+  { numero: "3", nome: "Tiago Espada", posicao: "Extremo", foto: "assets/jogadores/espada.JPG", nacionalidade: "Portuguesa", origem: "Figueira da Foz", ultimoClube: "Ginásio Clube Figueirense", altura: "178cm" },
 
   { numero: "5", nome: "Tay Hall", posicao: "Poste", foto: "", nacionalidade: "Americana", origem: "Nova York", ultimoClube: "Sampaense Basket", altura: "195cm" },
 
@@ -53,17 +53,17 @@ plantel: [
 
   { numero: "8", nome: "Diogo Gonçalves", posicao: "Extremo", capitao: true, foto: "assets/jogadores/diogo.jpg", nacionalidade: "Portuguesa", origem: "Lisboa", ultimoClube: "Sampaense Basket", altura: "200cm" },
 
-  { numero: "9", nome: "Adam Nongo", posicao: "Poste", foto: "", nacionalidade: "Congolês", origem: "Congo", ultimoClube: "ABA", altura: "198cm" },
+  { numero: "9", nome: "Adam Nongo", posicao: "Poste", foto: "assets/jogadores/nongo.jpg", nacionalidade: "Congolês", origem: "Congo", ultimoClube: "ABA", altura: "198cm" },
 
-  { numero: "11", nome: "Modou Mbop", posicao: "Poste", foto: "", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
+  { numero: "11", nome: "Modou Mbop", posicao: "Poste", foto: "assets/jogadores/modou.jpg", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
 
   { numero: "12", nome: "Pedro Abrantes", posicao: "Base", foto: "assets/jogadores/pedro.jpeg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
 
   { numero: "13", nome: "Jahlin Smith", posicao: "Extremo", foto: "", nacionalidade: "Americana", origem: "Los Angeles", ultimoClube: "Sampaense Basket", altura: "190cm" },
 
-  { numero: "80", nome: "Afonso Pereira", posicao: "Base", foto: "", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "178cm" },
+  { numero: "80", nome: "Afonso Pereira", posicao: "Base", foto: "assets/jogadores/pereira.JPG", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "178cm" },
 
-  { numero: "95", nome: "Nuno Barbosa", posicao: "Extremo", foto: "", nacionalidade: "Portuguesa", origem: "Póvoa de Varzim", ultimoClube: "Clube Desportivo da Póvoa", altura: "184cm" },
+  { numero: "95", nome: "Nuno Barbosa", posicao: "Extremo", foto: "assets/jogadores/barbosa.JPG", nacionalidade: "Portuguesa", origem: "Póvoa de Varzim", ultimoClube: "Clube Desportivo da Póvoa", altura: "184cm" },
 
   { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Lusitânia Futebol Clube", altura: "190cm" }
 
@@ -72,24 +72,24 @@ plantel: [
   // bloco "marcador" na função criarFoto() de js/site.js por uma tag <img src="...">.
   galeria: [
   {
-    legenda: "Pavilhão Comendador Serafim Marques",
-    foto: "assets/galeria/pavilhao.jpg"
+    legenda: "",
+    foto: "assets/galeria/all.jpg"
   },
   {
-    legenda: "Aquecimento",
+    legenda: "",
     foto: "assets/galeria/diogobola.jpg"
   },
   {
-    legenda: "Equipa",
+    legenda: "",
     foto: "assets/galeria/equipa.jpg"
   },
   {
-    legenda: "Bancada a apoiar",
+    legenda: "",
     foto: "assets/galeria/bancada.jpg"
   },
   {
-    legenda: "Último lance do jogo",
-    foto: "assets/galeria/jogo.jpg"
+    legenda: "",
+    foto: "assets/galeria/ultimolancedojogo.JPG"
   }
 ],
 
@@ -217,8 +217,14 @@ noticias: [
       nome: "Restaurante O Dinis",
       logo: "assets/parceiros/dinis.png",
       url: "https://www.facebook.com/restauranteodinis/?locale=pt_PT"
+    },
+    {
+      nome: "Mota Seguros",
+      logo: "assets/parceiros/mota.png",
+      url: "https://www.facebook.com/motaseguros/locale/pt_PT"
     }
   ],
+
 
   // Horários da formação (aba "Formação" no menu). Formato "início–fim"; deixa "" se não há treino nesse dia.
   formacao: {
@@ -237,11 +243,6 @@ noticias: [
   historia: {
     intro: "Palmarés e marcos do Sampaense Basket.",
 
-    texto: [
-      "Ao longo da sua história, o Sampaense Basket construiu um percurso de destaque no basquetebol português, conquistando quatro títulos nacionais e alcançando importantes resultados nas principais competições do país.",
-      "O clube chegou à final da Proliga em quatro épocas consecutivas, entre 2003/04 e 2006/07, conquistando três títulos consecutivos. Em 2008/09 voltou a disputar a final e garantiu a subida à Liga Portuguesa de Basquetebol, onde atingiu o 3.º lugar em 2013/14."
-    ],
-
     // Do mais antigo para o mais recente.
     cronologia: [
       { ano: "2000/01", titulo: "Campeão Nacional da 2.ª Divisão", texto: "Subida à 1.ª Divisão Nacional." },
@@ -250,7 +251,6 @@ noticias: [
       { ano: "2008/09", titulo: "Finalista da Proliga e subida à Liga", texto: "Vice-campeão da Proliga e subida à Liga Portuguesa de Basquetebol." },
       { ano: "2011/13", titulo: "Duas meias-finais da Taça de Portugal", texto: "Presença na Final 8 da Taça de Portugal em 2011/12 e 2012/13, chegando às meias-finais em ambas." },
       { ano: "2013/14", titulo: "3.º lugar na Liga e final do Troféu António Pratas", texto: "Meias-finais dos playoffs da Liga, terminando em 3.º lugar. No Troféu António Pratas, eliminou o Benfica nas meias-finais e perdeu a final com a Ovarense por 62–65, a primeira final oficial de uma competição da Liga." },
-      { ano: "2026/27", titulo: "Regresso à Proliga", texto: "O Sampaense Basket disputa a Proliga 2026/2027 no escalão sénior." }
     ],
 
     // Títulos nacionais

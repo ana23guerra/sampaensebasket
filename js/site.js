@@ -67,7 +67,7 @@ function renderizarProximoJogo() {
   const placar = $('placar');
   if (placar) placar.style.display = '';
 
-  $('escudo-sampaense').innerHTML = `<img src="assets/logo.jpeg" alt="">`;
+  $('escudo-sampaense').innerHTML = `<img src="assets/logo.png" alt="">`;
   $('placar-competicao').textContent = proximoJogo.competicao;
   $('nome-adversario').textContent = proximoJogo.adversario;
   $('escudo-adversario').textContent = iniciais(proximoJogo.adversario);
@@ -1049,20 +1049,6 @@ if (location.hash === '#formacao') abrirFormacao();
   if (lista(H.texto).length) {
     html += `<div class="historia-texto">${H.texto.map(p => `<p>${p}</p>`).join('')}</div>`;
   }
-
-  // O clube hoje (automático, a partir do resto do dados.js)
-  const hoje = [];
-  hoje.push(['Clube', C.nomeCompleto]);
-  hoje.push(['Localidade', C.localidade]);
-  if (C.treinador) hoje.push(['Treinador', C.treinador]);
-  if (H.pavilhao && H.pavilhao.nome) hoje.push(['Pavilhão', H.pavilhao.nome]);
-  if (F && lista(F.escaloes).length) hoje.push(['Escalões de formação', String(F.escaloes.length)]);
-  if (DADOS.plantel && DADOS.plantel.length) hoje.push(['Plantel sénior', DADOS.plantel.length + ' jogadores']);
-  html += `
-    <h3 class="historia-titulo">O clube hoje</h3>
-    <div class="jogador-dados historia-hoje">${hoje.map(([k, v]) => `<div><b>${k}</b><span>${v}</span></div>`).join('')}</div>`;
-  if (H.pavilhao && H.pavilhao.texto) html += `<p class="historia-pavilhao">${H.pavilhao.texto}</p>`;
-
   // Títulos
   if (lista(H.titulos).length) {
     html += `<h3 class="historia-titulo">Títulos e conquistas</h3>
