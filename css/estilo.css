@@ -892,3 +892,15 @@ section + section { border-top: 1px solid var(--linha); }
 }
 .jogos-seta:hover { transform: scale(1.08); }
 .jogos-seta:disabled { opacity: 0.25; cursor: default; transform: none; }
+
+#btn-lingua {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-left: 8px; padding: 7px 11px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px; color: #d8d8d8;
+  font: 700 12px 'Manrope', sans-serif; letter-spacing: 0.04em; cursor: pointer;
+}
+#btn-lingua:hover { background: rgba(255,255,255,0.12); color: #fff; }
+#btn-lingua svg { width: 22px; height: 15px; border-radius: 2px; display: block; }
+@media (max-width: 1020px) { #btn-lingua { margin: 10px 10px 0; align-self: flex-start; } }
