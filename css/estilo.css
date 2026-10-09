@@ -1037,3 +1037,33 @@ nav#menu a.ativo::after { transform: scaleX(1); }
   .jogador .numero { font-size: 34px; }
   .grelha-galeria { grid-template-columns: repeat(2, 1fr); }
 }
+/* ======================================================================
+   FUNDO ÚNICO VERDE ESCURO — todas as páginas/secções com o mesmo fundo
+   (cola no FIM do estilo.css; para mudar o tom, altera só --fundo-verde)
+   ====================================================================== */
+:root {
+  --fundo-verde: #0C2418;   /* verde escuro de fundo */
+  --fundo: var(--fundo-verde);
+  --papel: var(--fundo-verde);
+  --superficie: #143222;    /* cartões, um pouco mais claros que o fundo */
+  --linha: #25503A;
+  --verde-luz: #1A4230;     /* abas, etiquetas e botões pequenos */
+}
+
+body,
+#hero,
+#formacao,
+#historia,
+#contactos,
+#parceiros,
+.rodape-global { background: var(--fundo-verde); }
+
+/* Contactos e Parceiros eram claros: passam a texto claro sobre o verde */
+#contactos { color: var(--tinta); }
+#contactos .cabecalho-seccao h2 { color: var(--tinta); }
+#contactos .cabecalho-seccao p { color: var(--texto-suave); }
+.linha-contacto a { color: var(--tinta); }
+.redes a { border-color: var(--linha); color: var(--tinta); }
+.redes a:hover { border-color: var(--amarelo); color: var(--amarelo); }
+#parceiros .cabecalho-seccao h2 { color: var(--tinta); }
+.rodape-fim { border-top-color: var(--linha); }
