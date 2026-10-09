@@ -42,11 +42,11 @@ const DADOS = {
   // Os que ficarem vazios aparecem como "Por confirmar".
 plantel: [
 
-  { numero: "2", nome: "Markus Terry", posicao: "Base", foto: "assets/jogadores/markus.webp", nacionalidade: "Americana", origem: "Geórgia", ultimoClube: "Sampaense Basket", altura: "188cm" },
+  { numero: "2", nome: "Markus Terry", posicao: "Base", foto: "assets/jogadores/markus.webp", nacionalidade: "Americana", origem: "Johns Creek", ultimoClube: "Sampaense Basket", altura: "188cm" },
 
   { numero: "3", nome: "Tiago Espada", posicao: "Extremo", foto: "assets/jogadores/espada.webp", nacionalidade: "Portuguesa", origem: "Figueira da Foz", ultimoClube: "Ginásio Clube Figueirense", altura: "178cm" },
 
-  { numero: "5", nome: "Tay Hall", posicao: "Poste", foto: "assets/jogadores/tay.webp", nacionalidade: "Americana", origem: "Nova York", ultimoClube: "Sampaense Basket", altura: "195cm" },
+  { numero: "5", nome: "Tay Hall", posicao: "Poste", foto: "assets/jogadores/tay.webp", nacionalidade: "Americana", origem: "Atlanta", ultimoClube: "Sampaense Basket", altura: "195cm" },
 
   { numero: "6", nome: "Afonso Silva", posicao: "Extremo", foto: "assets/jogadores/silva.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "180cm" },
 
@@ -60,7 +60,7 @@ plantel: [
 
   { numero: "12", nome: "Pedro Abrantes", posicao: "Base", foto: "assets/jogadores/pedro.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
 
-  { numero: "13", nome: "Jahlin Smith", posicao: "Extremo", foto: "assets/jogadores/jay.webp", nacionalidade: "Americana", origem: "Los Angeles", ultimoClube: "Sampaense Basket", altura: "190cm" },
+  { numero: "13", nome: "Jahlin Smith", posicao: "Extremo", foto: "assets/jogadores/jay.webp", nacionalidade: "Americana", origem: "Barnwell", ultimoClube: "Delta Gurjaani", altura: "201cm" },
 
   { numero: "80", nome: "Afonso Pereira", posicao: "Base", foto: "assets/jogadores/pereira.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "178cm" },
 
