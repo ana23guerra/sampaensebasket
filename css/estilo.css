@@ -976,3 +976,64 @@ section + section { border-top: 1px solid var(--linha); }
 .mvp-modal-rodape { position: sticky; bottom: -28px; margin: 22px -28px -28px; padding: 16px 28px; background: var(--superficie); border-top: 1px solid var(--linha); display: flex; align-items: center; gap: 14px; }
 .mvp-modal-rodape .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .mvp-modal-rodape span { font-size: 13px; font-weight: 700; color: var(--texto-suave); }
+
+/* ======================================================================
+   NAVEGAÇÃO POR PÁGINAS — só a página inicial aparece à entrada;
+   as restantes abrem ao clicar no menu (controlado por js/paginas.js)
+   ====================================================================== */
+body.paginas section.pagina { display: none !important; }
+body.paginas section.pagina.pagina-ativa { display: block !important; animation: pagina-entra 0.25s ease; }
+@keyframes pagina-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+nav#menu a.ativo { color: #fff; }
+nav#menu a.ativo::after { transform: scaleX(1); }
+
+/* o rodapé passa a ficar fora dos Contactos, para aparecer em todas as páginas */
+.rodape-global { background: var(--papel); border-top: 1px solid var(--linha); }
+.rodape-global .rodape-fim { margin-top: 0; border-top: 0; padding: 22px 0 calc(22px + env(safe-area-inset-bottom, 0px)); }
+
+/* ======================================================================
+   TELEMÓVEL
+   ====================================================================== */
+@media (max-width: 620px) {
+  section { padding: 34px 0; }
+  .wrap { padding: 0 16px; }
+  #hero { padding: 36px 0 30px; }
+  .cabecalho-seccao { margin-bottom: 22px; }
+
+  /* cabeçalho mais compacto */
+  .nav-inner { padding: 10px 16px; gap: 10px; }
+  .marca { gap: 9px; min-width: 0; }
+  .marca img { height: 40px; width: 40px; }
+  .marca-nome b { font-size: 15px; }
+  #btn-lingua { margin-left: auto; }
+  nav#menu { max-height: calc(100vh - 72px); overflow-y: auto; }
+
+  /* JOGOS: cartões pequenos, 2 por linha, com a hora na mesma linha da data */
+  .carrossel-jogos .jogos-pagina { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .jogo-linha {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "data res" "eq eq";
+    align-content: space-between;
+    align-items: start;
+    gap: 10px 6px;
+    padding: 12px;
+    min-height: 150px;
+  }
+  .jogo-data { grid-area: data; border-right: 0; padding-right: 0; text-align: left; }
+  .jogo-data b { font-size: 21px; line-height: 1; }
+  .jogo-data span { display: none; }
+  .jogo-linha > :nth-child(2) { grid-area: eq; align-self: end; }
+  .jogo-linha > :nth-child(3) { grid-area: res; }
+  .jogo-resultado { font-size: 18px; line-height: 1; }
+  .jogo-local { font-size: 11px; margin-top: 3px; }
+  .jogo-equipas { flex-direction: column; align-items: flex-start; gap: 1px; font-size: 13px; line-height: 1.25; }
+  .jogo-equipas > span[style] { font-size: 10px; }
+  .jogo-equipas .tag { margin-top: 6px; font-size: 9.5px; line-height: 1.3; border-radius: 8px; }
+
+  /* plantel e restantes */
+  .grelha-plantel { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .jogador { padding: 14px 10px; }
+  .jogador .numero { font-size: 34px; }
+  .grelha-galeria { grid-template-columns: repeat(2, 1fr); }
+}
