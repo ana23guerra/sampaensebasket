@@ -1070,3 +1070,12 @@ body,
 
 /* Formação: tabela de horários com fundo preto */
 .tabela-formacao { background: #000; }
+
+/* bandeira PT/EN no canto direito */
+nav#menu { margin-left: auto; }
+#btn-lingua { order: 1; margin-left: 8px; }
+
+@media (max-width: 1020px) {
+  #btn-lingua { margin-left: auto; }
+  #burger { order: 2; }
+}
