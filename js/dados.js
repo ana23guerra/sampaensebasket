@@ -26,7 +26,6 @@ const DADOS = {
   jogos: [
     { status: "terminado", data: "2026-09-27T00:00", adversario: "União de Leiria", casa: false, competicao: "V Torneio AB Coimbra", pontosCasa: 44, pontosFora: 94 },
     { status: "agendado", data: "2026-10-03T18:30", adversario: "SC Vasco da Gama", casa: false, competicao: "Proliga 2026/2027 · Jornada 1", local: "Parque das Camélias, Porto" },
-    { status: "terminado", data: "2026-10-09T00:01", adversario: "Teste", casa: true, competicao: "Teste", pontosCasa: 80, pontosFora: 70 },
     { status: "agendado", data: "2026-10-10T16:30", adversario: "Sangalhos DC / CRB", casa: true, competicao: "Proliga 2026/2027 · Jornada 2" },
     { status: "agendado", data: "2026-10-18T15:00", adversario: "SL Benfica B", casa: false, competicao: "Proliga 2026/2027 · Jornada 3", local: "Pavilhão Fidelidade, Lisboa" },
     { status: "agendado", data: "2026-10-24T16:30", adversario: "Illiabum Clube Margres", casa: true, competicao: "Proliga 2026/2027 · Jornada 4" }
@@ -58,7 +57,7 @@ plantel: [
 
   { numero: "11", nome: "Modou Mbop", posicao: "Poste", foto: "assets/jogadores/modou.jpg", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
 
-  { numero: "12", nome: "Pedro Abrantes", posicao: "Base", foto: "assets/jogadores/pedro.jpeg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
+  { numero: "12", nome: "Pedro Abrantes", posicao: "Base", foto: "assets/jogadores/pedro.jpg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
 
   { numero: "13", nome: "Jahlin Smith", posicao: "Extremo", foto: "assets/jogadores/jay.jpg", nacionalidade: "Americana", origem: "Los Angeles", ultimoClube: "Sampaense Basket", altura: "190cm" },
 
