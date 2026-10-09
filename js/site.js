@@ -346,7 +346,7 @@ const DADO_VAZIO = '<span class="vazio">Por confirmar</span>';
 
 function criarAvatarJogador(j, classeExtra = '') {
   if (j.foto) {
-    return `<img class="avatar ${classeExtra} avatar-foto" src="${j.foto}" alt="${escaparHTML(j.nome)}" loading="lazy" data-fb="avatar" data-classe="${classeExtra}" data-ini="${iniciais(j.nome)}" onerror="imgFalhou(this)">`;
+    return `<img class="avatar ${classeExtra} avatar-foto" src="${j.foto}" alt="${escaparHTML(j.nome)}" width="300" height="300" loading="lazy" decoding="async" data-fb="avatar" data-classe="${classeExtra}" data-ini="${iniciais(j.nome)}" onerror="imgFalhou(this)">`;
   }
   return `<div class="avatar ${classeExtra}">${iniciais(j.nome)}</div>`;
 }

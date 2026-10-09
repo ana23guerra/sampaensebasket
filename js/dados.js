@@ -33,7 +33,7 @@ const DADOS = {
 
   // Plantel sénior masculino 2026/2027. Números e posições confirmados
 
-  // CAMPO "foto": caminho para a fotografia do jogador (ex.: "assets/jogadores/miguel-bastos.jpg").
+  // CAMPO "foto": caminho para a fotografia do jogador (ex.: "assets/jogadores/miguel-bastos.webp").
 
   // dentro de assets/jogadores/ e escrever o caminho aqui.
   // Ficha de cada jogador (abre ao clicar no cartão). Campos opcionais:
@@ -41,31 +41,31 @@ const DADOS = {
   // Os que ficarem vazios aparecem como "Por confirmar".
 plantel: [
 
-  { numero: "2", nome: "Markus Terry", posicao: "Base", foto: "assets/jogadores/markus.jpg", nacionalidade: "Americana", origem: "Geórgia", ultimoClube: "Sampaense Basket", altura: "188cm" },
+  { numero: "2", nome: "Markus Terry", posicao: "Base", foto: "assets/jogadores/markus.webp", nacionalidade: "Americana", origem: "Geórgia", ultimoClube: "Sampaense Basket", altura: "188cm" },
 
-  { numero: "3", nome: "Tiago Espada", posicao: "Extremo", foto: "assets/jogadores/espada.JPG", nacionalidade: "Portuguesa", origem: "Figueira da Foz", ultimoClube: "Ginásio Clube Figueirense", altura: "178cm" },
+  { numero: "3", nome: "Tiago Espada", posicao: "Extremo", foto: "assets/jogadores/espada.webp", nacionalidade: "Portuguesa", origem: "Figueira da Foz", ultimoClube: "Ginásio Clube Figueirense", altura: "178cm" },
 
-  { numero: "5", nome: "Tay Hall", posicao: "Poste", foto: "assets/jogadores/tay.jpg", nacionalidade: "Americana", origem: "Nova York", ultimoClube: "Sampaense Basket", altura: "195cm" },
+  { numero: "5", nome: "Tay Hall", posicao: "Poste", foto: "assets/jogadores/tay.webp", nacionalidade: "Americana", origem: "Nova York", ultimoClube: "Sampaense Basket", altura: "195cm" },
 
-  { numero: "6", nome: "Afonso Silva", posicao: "Extremo", foto: "assets/jogadores/silva.jpg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "180cm" },
+  { numero: "6", nome: "Afonso Silva", posicao: "Extremo", foto: "assets/jogadores/silva.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "180cm" },
 
-  { numero: "7", nome: "Mauro Tavares", posicao: "Extremo", foto: "assets/jogadores/mauro.jpg", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Ginásio Clube Olhanense", altura: "185cm" },
+  { numero: "7", nome: "Mauro Tavares", posicao: "Extremo", foto: "assets/jogadores/mauro.webp", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Ginásio Clube Olhanense", altura: "185cm" },
 
-  { numero: "8", nome: "Diogo Gonçalves", posicao: "Extremo", capitao: true, foto: "assets/jogadores/diogo.jpg", nacionalidade: "Portuguesa", origem: "Lisboa", ultimoClube: "Sampaense Basket", altura: "200cm" },
+  { numero: "8", nome: "Diogo Gonçalves", posicao: "Extremo", capitao: true, foto: "assets/jogadores/diogo.webp", nacionalidade: "Portuguesa", origem: "Lisboa", ultimoClube: "Sampaense Basket", altura: "200cm" },
 
-  { numero: "9", nome: "Adam Nongo", posicao: "Poste", foto: "assets/jogadores/nongo.jpg", nacionalidade: "Congolês", origem: "Congo", ultimoClube: "ABA", altura: "198cm" },
+  { numero: "9", nome: "Adam Nongo", posicao: "Poste", foto: "assets/jogadores/nongo.webp", nacionalidade: "Congolês", origem: "Congo", ultimoClube: "ABA", altura: "198cm" },
 
-  { numero: "11", nome: "Modou Mbop", posicao: "Poste", foto: "assets/jogadores/modou.jpg", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
+  { numero: "11", nome: "Modou Mbop", posicao: "Poste", foto: "assets/jogadores/modou.webp", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
 
-  { numero: "12", nome: "Pedro Abrantes", posicao: "Base", foto: "assets/jogadores/pedro.jpg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
+  { numero: "12", nome: "Pedro Abrantes", posicao: "Base", foto: "assets/jogadores/pedro.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
 
-  { numero: "13", nome: "Jahlin Smith", posicao: "Extremo", foto: "assets/jogadores/jay.jpg", nacionalidade: "Americana", origem: "Los Angeles", ultimoClube: "Sampaense Basket", altura: "190cm" },
+  { numero: "13", nome: "Jahlin Smith", posicao: "Extremo", foto: "assets/jogadores/jay.webp", nacionalidade: "Americana", origem: "Los Angeles", ultimoClube: "Sampaense Basket", altura: "190cm" },
 
-  { numero: "80", nome: "Afonso Pereira", posicao: "Base", foto: "assets/jogadores/pereira.JPG", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "178cm" },
+  { numero: "80", nome: "Afonso Pereira", posicao: "Base", foto: "assets/jogadores/pereira.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "178cm" },
 
-  { numero: "95", nome: "Nuno Barbosa", posicao: "Extremo", foto: "assets/jogadores/barbosa.JPG", nacionalidade: "Portuguesa", origem: "Póvoa de Varzim", ultimoClube: "Clube Desportivo da Póvoa", altura: "184cm" },
+  { numero: "95", nome: "Nuno Barbosa", posicao: "Extremo", foto: "assets/jogadores/barbosa.webp", nacionalidade: "Portuguesa", origem: "Póvoa de Varzim", ultimoClube: "Clube Desportivo da Póvoa", altura: "184cm" },
 
-  { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "assets/jogadores/denilson.jpg", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Lusitânia Futebol Clube", altura: "190cm" }
+  { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "assets/jogadores/denilson.webp", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Lusitânia Futebol Clube", altura: "190cm" }
 
 ],
   // Para já são placeholders visuais — quando tiveres fotos reais, troca o
