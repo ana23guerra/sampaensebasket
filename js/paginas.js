@@ -60,6 +60,8 @@
       if (s) s.classList.toggle('pagina-ativa', ativas.includes(id));
     });
     if (menu) {
+      window.dispatchEvent(new Event('resize'));
+      requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
       menu.querySelectorAll('a').forEach((a) => {
         const alvo = nomeDaPagina(a.getAttribute('href'));
         a.classList.toggle('ativo', nome !== 'home' && alvo === nome);
