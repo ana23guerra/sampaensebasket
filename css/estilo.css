@@ -430,7 +430,7 @@ section + section { border-top: 1px solid var(--linha); }
 /* Notícias */
 .grelha-noticias { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 .noticia {
-  background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden;
+  background: #000; border: 1px solid var(--linha); border-radius: 14px; overflow: hidden;
   display: flex; flex-direction: column;
 }
 .noticia .capa {
