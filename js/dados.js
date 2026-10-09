@@ -49,7 +49,7 @@ plantel: [
 
   { numero: "6", nome: "Afonso Silva", posicao: "Extremo", foto: "assets/jogadores/silva.jpg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "180cm" },
 
-  { numero: "7", nome: "Mauro Tavares", posicao: "Extremo", foto: "assets/jogadores/mauro.jpg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Ginásio Clube Olhanense", altura: "185cm" },
+  { numero: "7", nome: "Mauro Tavares", posicao: "Extremo", foto: "assets/jogadores/mauro.jpg", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Ginásio Clube Olhanense", altura: "185cm" },
 
   { numero: "8", nome: "Diogo Gonçalves", posicao: "Extremo", capitao: true, foto: "assets/jogadores/diogo.jpg", nacionalidade: "Portuguesa", origem: "Lisboa", ultimoClube: "Sampaense Basket", altura: "200cm" },
 
@@ -65,7 +65,7 @@ plantel: [
 
   { numero: "95", nome: "Nuno Barbosa", posicao: "Extremo", foto: "assets/jogadores/barbosa.JPG", nacionalidade: "Portuguesa", origem: "Póvoa de Varzim", ultimoClube: "Clube Desportivo da Póvoa", altura: "184cm" },
 
-  { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "assets/jogadores/denilson.jpg", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Lusitânia Futebol Clube", altura: "190cm" }
+  { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "assets/jogadores/denilson.jpg", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Lusitânia Futebol Clube", altura: "190cm" }
 
 ],
   // Para já são placeholders visuais — quando tiveres fotos reais, troca o

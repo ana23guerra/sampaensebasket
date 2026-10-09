@@ -310,12 +310,43 @@ atualizarJogosFPB();
 // Atualizar automaticamente a cada 20 minutos
 setInterval(atualizarJogosFPB, 20 * 60 * 1000);
 
+// ---- Imagens: se uma foto não carregar, tenta variações do nome (maiúsculas/minúsculas
+// na extensão e no nome) antes de mostrar o marcador. Resolve o caso típico de a foto
+// aparecer no computador mas não online (o servidor distingue .JPG de .jpg). ----
+function imgFalhou(img) {
+  const original = img.getAttribute('src') || '';
+  const m = original.match(/^(.*\/)?([^\/]*?)(\.[A-Za-z0-9]+)$/);
+  img._tentadas = img._tentadas || new Set([original]);
+  if (m) {
+    const pasta = m[1] || '';
+    const nome = m[2];
+    const exts = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG', '.webp', '.WEBP'];
+    const nomes = [...new Set([nome, nome.toLowerCase()])];
+    for (const n of nomes) {
+      for (const e of exts) {
+        const candidato = pasta + n + e;
+        if (!img._tentadas.has(candidato)) {
+          img._tentadas.add(candidato);
+          img.src = candidato;
+          return;
+        }
+      }
+    }
+  }
+  img.onerror = null;
+  if (img.dataset.fb === 'avatar') {
+    img.outerHTML = `<div class="avatar ${img.dataset.classe || ''}">${img.dataset.ini || ''}</div>`;
+  } else {
+    img.outerHTML = '<div class="marcador">Imagem indisponível</div>';
+  }
+}
+
 // ---- Plantel ----
 const DADO_VAZIO = '<span class="vazio">Por confirmar</span>';
 
 function criarAvatarJogador(j, classeExtra = '') {
   if (j.foto) {
-    return `<img class="avatar ${classeExtra} avatar-foto" src="${j.foto}" alt="${escaparHTML(j.nome)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;avatar ${classeExtra}&quot;>${iniciais(j.nome)}</div>'">`;
+    return `<img class="avatar ${classeExtra} avatar-foto" src="${j.foto}" alt="${escaparHTML(j.nome)}" loading="lazy" data-fb="avatar" data-classe="${classeExtra}" data-ini="${iniciais(j.nome)}" onerror="imgFalhou(this)">`;
   }
   return `<div class="avatar ${classeExtra}">${iniciais(j.nome)}</div>`;
 }
@@ -388,7 +419,7 @@ function fecharJogador() {
 function criarFoto(f, i, lista = 'galeria') {
   const imagem = f.foto
     ? `<img src="${f.foto}" alt="${lista === 'arquivo' ? 'Foto do arquivo' : f.legenda}" loading="lazy"
-         onerror="this.outerHTML='<div class=&quot;marcador&quot;>Imagem indisponível</div>'">`
+         data-fb="foto" onerror="imgFalhou(this)">`
     : `
       <div class="marcador">
         <svg viewBox="0 0 100 100" fill="none" stroke="#FFC222" stroke-width="3">
@@ -528,7 +559,9 @@ function abrirLightbox(i, lista = 'galeria') {
   const imagem = $('lightbox-imagem');
 
   if (foto.foto) {
-    imagem.src = foto.foto;
+    const figura = document.querySelectorAll('#lista-' + lista + ' .foto')[i];
+    const miniatura = figura && figura.querySelector('img');
+    imagem.src = (miniatura && (miniatura.currentSrc || miniatura.src)) || foto.foto;
     imagem.alt = foto.legenda;
     imagem.style.display = 'block';
     $('lightbox-icone').style.display = 'none';
