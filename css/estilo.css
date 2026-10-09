@@ -45,7 +45,7 @@ header#topo {
   z-index: 50;
 
   background: #111;
-  border-bottom: 4px solid var(--verde);
+  border-bottom: 4px solid var(--amarelo);
 
   padding-top: env(safe-area-inset-top, 0px);
 
@@ -200,7 +200,7 @@ nav#menu a:hover::after {
 
     padding: 10px 24px 18px;
 
-    border-bottom: 3px solid var(--verde);
+    border-bottom: 3px solid var(--amarelo);
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 
