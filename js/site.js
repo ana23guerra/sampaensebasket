@@ -232,13 +232,10 @@ renderizarJogos();
 // ------------------------------------------------------------
 
 async function atualizarJogosFPB() {
-
   try {
-
-    const resposta = await fetch(
-      'jogos.php?t=' + Date.now(),
-      { cache: 'no-store' }
-    );
+    const resposta = await fetch('/api/jogos', {
+      cache: 'no-store'
+    });
 
     if (!resposta.ok) {
       throw new Error('Erro HTTP ' + resposta.status);
@@ -250,40 +247,62 @@ async function atualizarJogosFPB() {
       throw new Error(dados.erro || 'Sem jogos da FPB');
     }
 
-    // Chave por dia — evita duplicar um jogo que já exista
-    // manualmente no dados.js. A FPB tem prioridade por estar
-    // mais atualizada, EXCETO quando já temos um resultado
-    // escrito à mão ("terminado") para esse dia e a FPB ainda só
-    // mostra "agendado" — nesse caso a FPB ainda não atualizou o
-    // site dela, por isso o resultado manual fica.
-    const porDia = new Map();
+    // Identifica cada jogo pela data, adversário e condição
+    // de jogar em casa ou fora, em vez de usar apenas a data.
+    function chaveJogo(j) {
+      const dia = (j.data || '').slice(0, 10);
+      const adversario = (j.adversario || '')
+        .trim()
+        .toLowerCase();
 
+      return `${dia}|${adversario}|${Boolean(j.casa)}`;
+    }
+
+    const porJogo = new Map();
+
+    // Começa com os jogos existentes no site.
     jogosAtuais.forEach(j => {
-      porDia.set(j.data.slice(0, 10), j);
+      porJogo.set(chaveJogo(j), j);
     });
 
+    // Atualiza com os dados da FPB.
     dados.jogos.forEach(j => {
-      if (!j.data) return;
+      if (!j.data || !j.adversario) return;
 
-      const dia = j.data.slice(0, 10);
-      const existente = porDia.get(dia);
+      const chave = chaveJogo(j);
+      const existente = porJogo.get(chave);
 
-      if (existente && existente.status === 'terminado' && j.status !== 'terminado') {
-        return; // mantém o resultado manual, ignora o "agendado" da FPB
+      // Se a FPB ainda não tem resultado, preserva um resultado
+      // final introduzido manualmente.
+      if (
+        existente &&
+        existente.status === 'terminado' &&
+        j.status !== 'terminado'
+      ) {
+        return;
       }
 
-      porDia.set(dia, j);
+      // A FPB passa a ter prioridade quando disponibiliza
+      // o resultado final do jogo.
+      porJogo.set(chave, {
+        ...existente,
+        ...j
+      });
     });
 
-    jogosAtuais = Array.from(porDia.values());
+    jogosAtuais = Array.from(porJogo.values());
 
     renderizarJogos();
 
+    console.info(
+      'Jogos atualizados com sucesso:',
+      dados.jogos.length,
+      'jogos recebidos da FPB.'
+    );
+
   } catch (erro) {
     console.error('Erro ao atualizar jogos da FPB:', erro);
-    // Falhou — os jogos do dados.js continuam visíveis, não faz nada.
   }
-
 }
 
 atualizarJogosFPB();
