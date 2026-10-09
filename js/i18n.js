@@ -9,7 +9,6 @@
     "galeria": "Gallery", "arquivo": "Archive", "notícias": "News", "sócio": "Membership",
     "parceiros": "Partners", "contactos": "Contact", "história": "History",
     "clube de basquetebol": "Basketball club",
-    "a força": "The strength", "do interior.": "of the heartland.",
     "notícias, calendário de jogos, plantel e a galeria do sampaense basket — tudo num só sítio, atualizado a cada jornada.":
       "News, game schedule, roster and gallery of Sampaense Basket — all in one place, updated every matchday.",
     "ver calendário": "View schedule", "conhecer o plantel": "Meet the roster",
@@ -76,7 +75,18 @@
       "Couldn't send directly. Opening your email app with the request filled in — you just need to hit send.",
     "não foi possível enviar. tenta novamente mais tarde.": "Couldn't send. Please try again later.",
     "não foi possível enviar. tenta novamente.": "Couldn't send. Please try again.",
-
+    // mvp
+    "mvp do jogo": "Game MVP", "votação aberta": "Voting open", "votação encerrada": "Voting closed",
+    "em breve": "Coming soon", "votar agora": "Vote now", "confirmar voto": "Confirm vote",
+    "um voto por pessoa.": "One vote per person.",
+    "os resultados ficam visíveis depois de votares.": "Results are shown once you've voted.",
+    "já votaste. obrigado!": "You've voted. Thank you!",
+    "a votação abre quando terminar o próximo jogo.": "Voting opens when the next game ends.",
+    "voto registado! obrigado.": "Vote registered! Thank you.",
+    "já votaste neste jogo.": "You've already voted in this game.",
+    "a votação deste jogo está fechada.": "Voting for this game is closed.",
+    "jogo inválido.": "Invalid game.", "jogador inválido.": "Invalid player.",
+    "não foi possível votar. tenta novamente.": "Couldn't register your vote. Please try again.",
     // parceiros / contactos / rodapé
     "parceiros & patrocinadores": "Partners & sponsors",
     "vem ver um jogo ao vivo ou fala connosco.": "Come and watch a live game or get in touch.",
@@ -117,6 +127,12 @@
     [/^Onde pagar: /, 'Where to pay: '],
     [/^(\d+) notícias encontradas$/, '$1 news items found'],
     [/Jornada (\d+)/, 'Round $1'],
+    [/^Quem foi o MVP contra (.+)\?$/, 'Who was the MVP against $1?'],
+    [/^Próximo jogo: (.+)$/, 'Next game: $1'],
+    [/^Fecha em (.+)$/, 'Closes in $1'],
+    [/^1 voto$/, '1 vote'],
+    [/^(\d+) votos$/, '$1 votes'],
+    [/^1º$/, '1st'], [/^2º$/, '2nd'], [/^3º$/, '3rd'],
     [/\(Capitão\)/, '(Captain)'],
     [/(\d+(?:[.,]\d+)?)\s*€\s*\/\s*ano/, '€$1/year'],
     [/^(\d{1,2}:\d{2})h$/, '$1']
@@ -233,12 +249,13 @@
   btn.id = 'btn-lingua';
   btn.addEventListener('click', () => definirLingua(lang === 'en' ? 'pt' : 'en'));
   const menu = document.getElementById('menu');
-  if (menu) menu.appendChild(btn);
+  const barra = document.querySelector('.nav-inner');
+  if (barra) barra.insertBefore(btn, document.getElementById('burger'));
 
   function atualizarBotao() {
-    const paraIngles = lang !== 'en';
-    btn.innerHTML = (paraIngles ? BANDEIRA_EN : BANDEIRA_PT) + '<span>' + (paraIngles ? 'EN' : 'PT') + '</span>';
-    const txt = paraIngles ? 'Mudar para inglês' : 'Switch to Portuguese';
+    const emIngles = lang === 'en';
+    btn.innerHTML = (emIngles ? BANDEIRA_EN : BANDEIRA_PT) + '<span>' + (emIngles ? 'EN' : 'PT') + '</span>';
+    const txt = emIngles ? 'Switch to Portuguese' : 'Mudar para inglês';
     btn.setAttribute('aria-label', txt);
     btn.title = txt;
   }
