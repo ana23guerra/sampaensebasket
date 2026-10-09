@@ -8,18 +8,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/estilo.css?v=20261009">
+<link rel="stylesheet" href="css/estilo.css?v=20261010">
 </head>
 <body>
 
 <header id="topo">
   <div class="nav-inner">
 
-    <a href="#hero" class="marca">
+    <!-- Símbolo: só aparece aqui em telemóvel; em computador fica no meio do menu -->
+    <a href="#hero" class="marca" aria-label="Sampaense Basket — início">
       <img src="assets/logo.png" alt="Emblema Sampaense Basket">
-      <span class="marca-nome">
-        <b>SAMPAENSE BASKET CLUB</b>
-      </span>
     </a>
 
     <button
@@ -46,14 +44,23 @@
 
     <nav id="menu">
 
-      <a href="#jogos">Jogos</a>
-      <a href="#plantel">Plantel</a>
-      <a href="#formacao" onclick="abrirFormacao(event)">Formação</a>
-      <a href="#galeria">Galeria</a>
-      <a href="#noticias">Notícias</a>
-      <a href="#socio">Sócio</a>
-      <a href="#parceiros">Parceiros</a>
-      <a href="#contactos">Contactos</a>
+      <div class="menu-lado esq">
+        <a href="#jogos">Jogos</a>
+        <a href="#plantel">Plantel</a>
+        <a href="#formacao" onclick="abrirFormacao(event)">Formação</a>
+      </div>
+
+      <a href="#hero" class="marca-centro" aria-label="Sampaense Basket — início">
+        <img src="assets/logo.png" alt="Emblema Sampaense Basket">
+      </a>
+
+      <div class="menu-lado dir">
+        <a href="#galeria">Galeria</a>
+        <a href="#noticias">Notícias</a>
+        <a href="#socio">Sócio</a>
+        <a href="#parceiros">Parceiros</a>
+        <a href="#contactos">Contactos</a>
+      </div>
 
     </nav>
 
