@@ -16,7 +16,8 @@ const DADOS = {
     email: "sampaensebasket@gmail.com",        
     emailSocios: "sampaensebasket@gmail.com",     // email para onde os pedidos de sócio devem ser enviados (pode ser igual ao acima)
     instagram: "https://www.instagram.com/sampaensebasket/",       // preenche com o link oficial, se existir
-    facebook: "https://www.facebook.com/sampaensebasket/"         // preenche com o link oficial, se existir
+    facebook: "https://www.facebook.com/sampaensebasket/",        // preenche com o link oficial, se existir
+    web3formsKey: ""   // chave do Web3Forms (pré-inscrições de sócio por email) — ver instruções
   },
 
   // status: "agendado" (ainda não jogado) ou "terminado" (já tem resultado)

@@ -959,6 +959,8 @@ if (btnAtualizarNoticias) {
 
 }
 // ---- Sócio ----
+// Envio direto por email para o clube através do serviço Web3Forms
+// (a chave fica em DADOS.clube.web3formsKey, no dados.js).
 async function submeterSocio(ev) {
   ev.preventDefault();
   const form = $('form-socio');
@@ -970,34 +972,62 @@ async function submeterSocio(ev) {
   const telefone = $('socio-telefone').value.trim();
   const escalao = $('socio-escalao').value;
 
+  const mensagemSucesso = 'Pré-inscrição registada! Para oficializar, paga a quota em mão, presencialmente no clube.';
+  const contacto = [DADOS.clube.telefone, DADOS.clube.email].filter(Boolean).join(' · ');
+  const mensagemErro = 'Não foi possível enviar a pré-inscrição. Tenta novamente mais tarde' + (contacto ? ' ou contacta o clube: ' + contacto : '') + '.';
+
+  // Anti-spam: o campo "website" está escondido, só os robots o preenchem
+  if ($('socio-website').value.trim() !== '') {
+    form.reset();
+    feedback.textContent = mensagemSucesso;
+    feedback.style.color = 'var(--verde)';
+    return;
+  }
+
+  const chave = DADOS.clube.web3formsKey;
+  if (!chave) {
+    feedback.textContent = mensagemErro;
+    feedback.style.color = 'var(--vermelho, #c0392b)';
+    return;
+  }
+
   botao.disabled = true;
   feedback.textContent = 'A enviar...';
   feedback.style.color = 'var(--texto-suave)';
 
   try {
-    const resposta = await fetch('socios.php', {
+    const resposta = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      body: new FormData(form)
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: chave,
+        subject: 'Pré-inscrição de sócio — ' + nome,
+        from_name: DADOS.clube.nome + ' (site)',
+        name: nome,
+        email: email,
+        telefone: telefone || '(não indicado)',
+        escalao: escalao,
+        message: 'A inscrição só fica oficial após o pagamento da quota, em mão, presencialmente no clube.'
+      })
     });
     const dados = await resposta.json();
 
-    if (dados.ok) {
+    if (dados.success) {
       form.reset();
-      feedback.textContent = 'Pré-inscrição registada! Para oficializar, paga a quota em mão, presencialmente no clube.';
+      feedback.textContent = mensagemSucesso;
       feedback.style.color = 'var(--verde)';
     } else {
-      feedback.textContent = dados.mensagem || 'Não foi possível enviar. Tenta novamente.';
+      feedback.textContent = mensagemErro;
       feedback.style.color = 'var(--vermelho, #c0392b)';
     }
   } catch (erro) {
-    // Não abre o email da pessoa: mostra só uma mensagem de erro com os contactos do clube
-    const contacto = [DADOS.clube.telefone, DADOS.clube.email].filter(Boolean).join(' · ');
-    feedback.textContent = 'Não foi possível enviar a pré-inscrição. Tenta novamente mais tarde' + (contacto ? ' ou contacta o clube: ' + contacto : '') + '.';
+    feedback.textContent = mensagemErro;
     feedback.style.color = 'var(--vermelho, #c0392b)';
   } finally {
     botao.disabled = false;
   }
 }
+
 if (DADOS.socio) {
   $('socio-intro').textContent = DADOS.socio.intro;
   $('socio-nota-precos').textContent = DADOS.socio.notaPrecos || '';
