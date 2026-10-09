@@ -990,20 +990,10 @@ async function submeterSocio(ev) {
       feedback.style.color = 'var(--vermelho, #c0392b)';
     }
   } catch (erro) {
-    // Sem servidor/PHP disponível: recorre ao email como alternativa
-    const destino = DADOS.clube.emailSocios || DADOS.clube.email;
-    if (destino) {
-      const assunto = encodeURIComponent('Pré-inscrição de sócio — ' + nome);
-      const corpo = encodeURIComponent(
-        `Nome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}\nEscalão pretendido: ${escalao}\n\nA inscrição só fica oficial após o pagamento da quota, em mão, presencialmente no clube.\n\nEnviado a partir do site do ${DADOS.clube.nome}.`
-      );
-      window.location.href = `mailto:${destino}?subject=${assunto}&body=${corpo}`;
-      feedback.textContent = 'Não foi possível enviar diretamente. A abrir o teu email com o pedido preenchido — falta só enviar.';
-      feedback.style.color = 'var(--amarelo)';
-    } else {
-      feedback.textContent = 'Não foi possível enviar. Tenta novamente mais tarde.';
-      feedback.style.color = 'var(--vermelho, #c0392b)';
-    }
+    // Não abre o email da pessoa: mostra só uma mensagem de erro com os contactos do clube
+    const contacto = [DADOS.clube.telefone, DADOS.clube.email].filter(Boolean).join(' · ');
+    feedback.textContent = 'Não foi possível enviar a pré-inscrição. Tenta novamente mais tarde' + (contacto ? ' ou contacta o clube: ' + contacto : '') + '.';
+    feedback.style.color = 'var(--vermelho, #c0392b)';
   } finally {
     botao.disabled = false;
   }
