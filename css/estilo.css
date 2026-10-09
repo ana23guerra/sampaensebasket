@@ -1045,7 +1045,7 @@ nav#menu a.ativo::after { transform: scaleX(1); }
   --fundo-verde: #0C2418;   /* verde escuro de fundo */
   --fundo: var(--fundo-verde);
   --papel: var(--fundo-verde);
-  --superficie: #143222;    /* cartões, um pouco mais claros que o fundo */
+  --superficie: #000;       /* cartões: jogos, notícias, jogadores, história, sócio... */
   --linha: #25503A;
   --verde-luz: #1A4230;     /* abas, etiquetas e botões pequenos */
 }
