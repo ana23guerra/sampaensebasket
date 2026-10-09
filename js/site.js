@@ -774,13 +774,13 @@ async function atualizarNoticias() {
   );
 
   try {
-
     const resposta = await fetch(
-      'noticias.php?t=' + Date.now(),
+      '/api/noticias',
       {
         cache: 'no-store'
       }
     );
+
 
     if (!resposta.ok) {
       throw new Error(
