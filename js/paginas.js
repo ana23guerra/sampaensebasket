@@ -89,9 +89,9 @@
     ir(nomeDaPagina('#' + id));
   }, true);
 
-  // Botões "Fechar" da Formação e da História
-  window.fecharFormacao = () => ir('plantel');
-  window.fecharHistoria = () => ir('plantel');
+  // Botões "Fechar": voltam sempre ao início
+  window.fecharFormacao = () => ir('home');
+  window.fecharHistoria = () => ir('home');
 
   // Botões "atrás/à frente" do telemóvel
   window.addEventListener('popstate', () => mostrar(nomeDaPagina(location.hash)));
