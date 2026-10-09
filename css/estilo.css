@@ -1079,3 +1079,13 @@ nav#menu { margin-left: auto; }
   #btn-lingua { margin-left: auto; }
   #burger { order: 2; }
 }
+
+/* bandeira sem fundo nem contorno */
+#btn-lingua,
+#btn-lingua:hover {
+  background: none;
+  border: none;
+  padding: 7px 4px;
+}
+#btn-lingua { opacity: 0.85; transition: opacity 0.2s ease; }
+#btn-lingua:hover { opacity: 1; color: #fff; }
