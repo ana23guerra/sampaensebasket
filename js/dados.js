@@ -73,23 +73,23 @@ plantel: [
   galeria: [
   {
     legenda: "",
-    foto: "assets/galeria/all.jpg"
+    foto: "assets/galeria/all.webp"
   },
   {
     legenda: "",
-    foto: "assets/galeria/grito.jpg"
+    foto: "assets/galeria/grito.webp"
   },
   {
     legenda: "",
-    foto: "assets/galeria/equipa.jpg"
+    foto: "assets/galeria/equipa.webp"
   },
   {
     legenda: "",
-    foto: "assets/galeria/bancada.jpg"
+    foto: "assets/galeria/bancada.webp"
   },
   {
     legenda: "",
-    foto: "assets/galeria/ultimolancedojogo.JPG"
+    foto: "assets/galeria/ultimolancedojogo.webp"
   }
 ],
 
