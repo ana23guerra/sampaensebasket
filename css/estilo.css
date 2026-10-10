@@ -133,7 +133,6 @@ nav#menu a:hover {
   background: rgba(255, 255, 255, 0.07);
 }
 
-/* linha verde por baixo */
 nav#menu a::after {
   content: '';
 
@@ -1085,3 +1084,9 @@ nav#menu { margin-left: auto; }
 }
 #btn-lingua { opacity: 0.85; transition: opacity 0.2s ease; }
 #btn-lingua:hover { opacity: 1; color: #fff; }
+
+/* bandeira PT/EN: em mobile só aparece com o menu aberto */
+@media (max-width: 1020px) {
+  #btn-lingua { display: none; }
+  .nav-inner:has(#menu.aberto) #btn-lingua { display: inline-flex; }
+}
