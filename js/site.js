@@ -179,12 +179,19 @@ function montarCarrosselJogos(pista) {
 
   const atualizar = () => {
     const paginas = pista.querySelectorAll('.jogos-pagina').length;
-    const atual = Math.min(paginas, Math.round(pista.scrollLeft / Math.max(1, pista.clientWidth)) + 1);
     const max = pista.scrollWidth - pista.clientWidth - 2;
+    const noInicio = pista.scrollLeft <= 2;
+    const noFim = pista.scrollLeft >= max;
+
     controlos.style.display = paginas > 1 ? '' : 'none';
-    contador.textContent = atual + ' / ' + paginas;
-    anterior.disabled = pista.scrollLeft <= 2;
-    seguinte.disabled = pista.scrollLeft >= max;
+
+    // sem números: o espaço do meio fica vazio para as setas não encostarem
+    contador.textContent = '';
+    contador.style.cssText = 'display:inline-block; min-width:48px;';
+
+    // na 1.ª página some a seta de trás; na última some a da frente
+    anterior.style.visibility = noInicio ? 'hidden' : 'visible';
+    seguinte.style.visibility = noFim ? 'hidden' : 'visible';
   };
   pista._atualizarControlos = atualizar;
   pista.addEventListener('scroll', atualizar, { passive: true });
