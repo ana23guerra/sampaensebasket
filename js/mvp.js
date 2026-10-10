@@ -51,10 +51,10 @@
   }
   async function pedir(id, jogador) {
     if (jogador) {
-      const r = await fetch('mvp.php', { method: 'POST', body: new URLSearchParams({ jogo: id, jogador }) });
+      const r = await fetch('/api/mvp', { method: 'POST', body: new URLSearchParams({ jogo: id, jogador }) });
       return r.json();
     }
-    const r = await fetch('mvp.php?jogo=' + id + '&t=' + Date.now());
+    const r = await fetch('/api/mvp?jogo=' + id + '&t=' + Date.now());
     return r.json();
   }
   const textoVotos = (n) => (n === 1 ? '1 voto' : n + ' votos');
