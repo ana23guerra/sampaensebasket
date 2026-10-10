@@ -226,6 +226,11 @@ function mudarAba(qual, botao) {
 
 // Primeira apresentação, já com o que está no dados.js
 renderizarJogos();
+
+// ------------------------------------------------------------
+// Buscar jogos/resultados à FPB e juntar aos do dados.js
+// ------------------------------------------------------------
+
 async function atualizarJogosFPB() {
   try {
     const resposta = await fetch('/api/jogos', {
@@ -242,6 +247,8 @@ async function atualizarJogosFPB() {
       throw new Error(dados.erro || 'Sem jogos da FPB');
     }
 
+    // Identifica cada jogo pela data, adversário e condição
+    // de jogar em casa ou fora, em vez de usar apenas a data.
     function chaveJogo(j) {
       const dia = (j.data || '').slice(0, 10);
       const adversario = (j.adversario || '')
@@ -265,7 +272,8 @@ async function atualizarJogosFPB() {
       const chave = chaveJogo(j);
       const existente = porJogo.get(chave);
 
-      // Preserva um resultado final introduzido manualmente.
+      // Se a FPB ainda não tem resultado, preserva um resultado
+      // final introduzido manualmente.
       if (
         existente &&
         existente.status === 'terminado' &&
@@ -274,20 +282,12 @@ async function atualizarJogosFPB() {
         return;
       }
 
-      const novo = { ...existente, ...j };
-
-      // A FPB às vezes só traz o dia (T00:00): nesse caso
-      // mantém a hora que já está no dados.js
-      if (
-        existente &&
-        existente.data &&
-        (j.data || '').endsWith('T00:00') &&
-        !existente.data.endsWith('T00:00')
-      ) {
-        novo.data = existente.data;
-      }
-
-      porJogo.set(chave, novo);
+      // A FPB passa a ter prioridade quando disponibiliza
+      // o resultado final do jogo.
+      porJogo.set(chave, {
+        ...existente,
+        ...j
+      });
     });
 
     jogosAtuais = Array.from(porJogo.values());
@@ -304,6 +304,12 @@ async function atualizarJogosFPB() {
     console.error('Erro ao atualizar jogos da FPB:', erro);
   }
 }
+
+atualizarJogosFPB();
+
+// Atualizar automaticamente a cada 20 minutos
+setInterval(atualizarJogosFPB, 20 * 60 * 1000);
+
 // ---- Imagens: se uma foto não carregar, tenta variações do nome (maiúsculas/minúsculas
 // na extensão e no nome) antes de mostrar o marcador. Resolve o caso típico de a foto
 // aparecer no computador mas não online (o servidor distingue .JPG de .jpg). ----
