@@ -26,7 +26,8 @@
     // plantel
     "equipa sénior masculina 2026/2027, orientada pelo treinador cláudio figueiredo e alexandre fernandes.":
       "Senior men's team 2026/2027, coached by Cláudio Figueiredo and Alexandre Fernandes.",
-    "todos": "All", "base": "Point guard", "extremo": "Wing", "poste": "Big",
+    "todos": "All", "base": "Point Guard", "extremo-base": "Shooting Guard",
+    "extremo": "Small Forward", "extremo-poste": "Power Forward", "poste": "Center",
     "ver ficha →": "View profile →", "por confirmar": "To be confirmed",
     "sem jogadores para mostrar.": "No players to show.",
     "nacionalidade": "Nationality", "naturalidade": "Hometown", "último clube": "Last club", "altura": "Height",
