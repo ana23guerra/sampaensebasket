@@ -92,7 +92,7 @@ header#topo {
 
 .marca-nome b {
   font-family: 'Anton', sans-serif;
-  font-size: 20px;
+  font-size: 23px;
   letter-spacing: 0.04em;
   color: #fff;
 }
@@ -1005,7 +1005,7 @@ nav#menu a.ativo::after { transform: scaleX(1); }
   .nav-inner { padding: 10px 16px; gap: 10px; }
   .marca { gap: 9px; min-width: 0; }
   .marca img { height: 40px; width: 40px; }
-  .marca-nome b { font-size: 15px; }
+  .marca-nome b { font-size: 17px; }
   #btn-lingua { margin-left: auto; }
   nav#menu { max-height: calc(100vh - 72px); overflow-y: auto; }
 
