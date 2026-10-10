@@ -223,7 +223,18 @@ noticias: [
       nome: "Mota Seguros",
       logo: "assets/parceiros/mota.png",
       url: "https://www.facebook.com/motaseguros/locale/pt_PT"
+    },
+    {
+      nome: "JMF Portões e Automatismos",
+      logo: "assets/parceiros/JMF.png",
+      url: "https://jmf-automatismos.com/"
+    },
+    {
+      nome: "JMF Portões e Automatismos",
+      logo: "assets/parceiros/JMF.png",
+      url: "https://jmf-automatismos.com/"
     }
+
   ],
 
 

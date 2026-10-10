@@ -1090,3 +1090,21 @@ nav#menu { margin-left: auto; }
   #btn-lingua { display: none; }
   .nav-inner:has(#menu.aberto) #btn-lingua { display: inline-flex; }
 }
+
+/* ARQUIVO: título em letra de script antiga */
+#arquivo .cabecalho-seccao h2 {
+  font-family: 'Yellowtail', cursive;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: clamp(44px, 7vw, 68px);
+  line-height: 1.1;
+  color: var(--amarelo);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+
+#arquivo .cabecalho-seccao p {
+  font-style: italic;
+}
