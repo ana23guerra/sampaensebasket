@@ -229,11 +229,7 @@ noticias: [
       logo: "assets/parceiros/JMF.png",
       url: "https://jmf-automatismos.com/"
     },
-    {
-      nome: "JMF Portões e Automatismos",
-      logo: "assets/parceiros/JMF.png",
-      url: "https://jmf-automatismos.com/"
-    }
+  
 
   ],
 
