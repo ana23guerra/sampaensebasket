@@ -1,4 +1,3 @@
-
 const PAGINA_FPB = 'https://www.fpb.pt/equipa/equipa_63077/';
 const NOME_CLUBE = 'Sampaense';
 
@@ -71,8 +70,6 @@ function processarJogos(html) {
     for (const link of links) {
       const [, href, id, bloco] = link;
 
-      if (jogos.has(id)) continue;
-
       const nomes = [
         ...bloco.matchAll(/alt=["']Logo\s+([^"']+)["']/giu)
       ].map(m => limparTexto(m[1]));
@@ -121,7 +118,7 @@ function processarJogos(html) {
 
       const competicaoMatch = texto.match(/\|\s*([^|]+)$/u);
 
-      jogos.set(id, {
+      const jogo = {
         status,
         data: `${dataISO}T${hora}`,
         adversario,
@@ -135,7 +132,22 @@ function processarJogos(html) {
         pontosCasa,
         pontosFora,
         url: new URL(decodeHTML(href), PAGINA_FPB).href
-      });
+      };
+
+      // O mesmo jogo aparece em várias secções da página da FPB
+      // (Resultados, Calendário, Próximo Jogo...). Se a primeira aparição
+      // não tem hora nem resultado, aceita a seguinte que tenha.
+      const anterior = jogos.get(id);
+      if (anterior) {
+        const anteriorSemInfo =
+          anterior.status === 'agendado' && anterior.data.endsWith('T00:00');
+        const novoTemInfo =
+          jogo.status === 'terminado' || !jogo.data.endsWith('T00:00');
+
+        if (!(anteriorSemInfo && novoTemInfo)) continue;
+      }
+
+      jogos.set(id, jogo);
     }
   }
 

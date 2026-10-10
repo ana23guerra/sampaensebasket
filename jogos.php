@@ -236,11 +236,6 @@ function processarPaginaEquipa($html, $nomeClube) {
 
             $internalID = $blocos[2][$i];
 
-            // Já processámos este jogo noutro bloco da página — ignora.
-            if (isset($jogosPorId[$internalID])) {
-                continue;
-            }
-
             $urlJogo =
                 html_entity_decode(
                     $blocos[1][$i],
@@ -339,7 +334,7 @@ function processarPaginaEquipa($html, $nomeClube) {
                 $competicao = trim($m[1]);
             }
 
-            $jogosPorId[$internalID] = [
+            $jogo = [
                 'status'     => $status,
                 'data'       => $dataISO . 'T' . $hora,
                 'adversario' => $adversario,
@@ -350,6 +345,29 @@ function processarPaginaEquipa($html, $nomeClube) {
                 'pontosFora' => $pontosFora,
                 'url'        => $urlJogo
             ];
+
+            // O mesmo jogo aparece em várias secções da página da FPB
+            // (Resultados, Calendário, Próximo Jogo...). Se a primeira
+            // aparição não tem hora nem resultado, aceita a seguinte que tenha.
+            if (isset($jogosPorId[$internalID])) {
+
+                $anterior = $jogosPorId[$internalID];
+
+                $anteriorSemInfo =
+                    $anterior['status'] === 'agendado' &&
+                    substr($anterior['data'], -5) === '00:00';
+
+                $novoTemInfo =
+                    $jogo['status'] === 'terminado' ||
+                    substr($jogo['data'], -5) !== '00:00';
+
+                if (!($anteriorSemInfo && $novoTemInfo)) {
+                    continue;
+                }
+
+            }
+
+            $jogosPorId[$internalID] = $jogo;
 
         }
 
