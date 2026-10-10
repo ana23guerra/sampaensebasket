@@ -66,7 +66,7 @@ plantel: [
 
   { numero: "95", nome: "Nuno Barbosa", posicao: "Extremo", foto: "assets/jogadores/barbosa.webp", nacionalidade: "Portuguesa", origem: "Póvoa de Varzim", ultimoClube: "Clube Desportivo da Póvoa", altura: "184cm" },
 
-  { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "assets/jogadores/denilson.webp", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Lusitânia Futebol Clube", altura: "190cm" }
+  { numero: "99", nome: "Denilson Tavares", posicao: "Base", foto: "assets/jogadores/denilson.webp", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Lusitânia Futebol Clube", altura: "188cm" }
 
 ],
   // Para já são placeholders visuais — quando tiveres fotos reais, troca o
