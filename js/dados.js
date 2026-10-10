@@ -50,9 +50,9 @@ plantel: [
 
   { numero: "6", nome: "Afonso Silva", posicao: "Extremo-base", foto: "assets/jogadores/silva.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "180cm" },
 
-  { numero: "7", nome: "Mauro Tavares", posicao: "Extremo", foto: "assets/jogadores/mauro.webp", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Ginásio Clube Olhanense", altura: "185cm" },
+  { numero: "7", nome: "Mauro Tavares", posicao: "Extremo-base", foto: "assets/jogadores/mauro.webp", nacionalidade: "Portuguesa", origem: "Cabo Verde", ultimoClube: "Ginásio Clube Olhanense", altura: "185cm" },
 
-  { numero: "8", nome: "Diogo Gonçalves", posicao: "Extremo-poste", capitao: true, foto: "assets/jogadores/diogo.webp", nacionalidade: "Portuguesa", origem: "Lisboa", ultimoClube: "Sampaense Basket", altura: "200cm" },
+  { numero: "8", nome: "Diogo Gonçalves", posicao: "Extremo-Poste", capitao: true, foto: "assets/jogadores/diogo.webp", nacionalidade: "Portuguesa", origem: "Lisboa", ultimoClube: "Sampaense Basket", altura: "200cm" },
 
   { numero: "9", nome: "Adam Nongo", posicao: "Poste", foto: "assets/jogadores/nongo.webp", nacionalidade: "Congolês", origem: "Congo", ultimoClube: "ABA", altura: "198cm" },
 
