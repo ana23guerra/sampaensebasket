@@ -1,12 +1,36 @@
-// api/mvp.js — votação MVP do jogo (Vercel + Upstash Redis)
+// api/mvp.js — votação MVP do jogo (Vercel + Redis)
 //
 // GET  /api/mvp?jogo=AAAA-MM-DD            -> { ok, votos: { "8": 3, ... }, total }
 // POST /api/mvp  (jogo, jogador)            -> regista 1 voto por pessoa e devolve o mesmo
 //
-// Precisa de uma base de dados Upstash Redis ligada ao projeto na Vercel
-// (as variáveis KV_REST_API_URL e KV_REST_API_TOKEN são criadas automaticamente).
+// Usa a variável REDIS_URL que a Vercel cria quando a base de dados Redis
+// é ligada ao projeto. Precisa do pacote "redis" (ver package.json).
 
 const crypto = require('crypto');
+const { createClient } = require('redis');
+
+let ligacao = null; // reutilizada entre pedidos enquanto a função estiver "quente"
+
+async function obterRedis() {
+  if (!process.env.REDIS_URL) {
+    throw new Error('Variável REDIS_URL em falta (base de dados não ligada ao projeto).');
+  }
+
+  if (ligacao && ligacao.cliente.isOpen) {
+    return ligacao.cliente;
+  }
+
+  const cliente = createClient({
+    url: process.env.REDIS_URL,
+    socket: { connectTimeout: 8000 }
+  });
+
+  cliente.on('error', (e) => console.error('Redis:', e.message));
+
+  ligacao = { cliente };
+  await cliente.connect();
+  return cliente;
+}
 
 function lerCorpo(corpo) {
   if (!corpo) return {};
@@ -14,46 +38,15 @@ function lerCorpo(corpo) {
   return corpo;
 }
 
-async function redis(comandos) {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-
-  if (!url || !token) {
-    throw new Error('Base de dados Redis não configurada.');
-  }
-
-  const resposta = await fetch(url.replace(/\/$/, '') + '/pipeline', {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(comandos),
-    signal: AbortSignal.timeout(8000)
-  });
-
-  if (!resposta.ok) {
-    throw new Error('Redis respondeu com HTTP ' + resposta.status);
-  }
-
-  const dados = await resposta.json();
-
-  return dados.map((d) => {
-    if (d.error) throw new Error(d.error);
-    return d.result;
-  });
-}
-
-async function resultados(chaveVotos) {
-  const [lista] = await redis([['HGETALL', chaveVotos]]);
+async function resultados(redis, chaveVotos) {
+  const lista = await redis.hGetAll(chaveVotos);
 
   const votos = {};
   let total = 0;
 
-  for (let i = 0; i < (lista || []).length; i += 2) {
-    const n = Number(lista[i + 1]) || 0;
-    votos[lista[i]] = n;
-    total += n;
+  for (const [jogador, n] of Object.entries(lista || {})) {
+    votos[jogador] = Number(n) || 0;
+    total += votos[jogador];
   }
 
   return { votos, total };
@@ -72,10 +65,11 @@ module.exports = async function handler(req, res) {
     }
 
     const chaveVotos = `mvp:${jogo}:votos`;
+    const redis = await obterRedis();
 
     // ---- Ler resultados ----
     if (!ePost) {
-      return res.status(200).json({ ok: true, ...(await resultados(chaveVotos)) });
+      return res.status(200).json({ ok: true, ...(await resultados(redis, chaveVotos)) });
     }
 
     // ---- Votar ----
@@ -101,22 +95,23 @@ module.exports = async function handler(req, res) {
       .digest('hex')
       .slice(0, 32);
 
-    const [novo] = await redis([['SADD', `mvp:${jogo}:eleitores`, eleitor]]);
+    const novo = await redis.sAdd(`mvp:${jogo}:eleitores`, eleitor);
 
     if (!novo) {
       return res.status(200).json({
         ok: false,
-        ...(await resultados(chaveVotos)),
+        ...(await resultados(redis, chaveVotos)),
         mensagem: 'Já votaste neste jogo.'
       });
     }
 
-    await redis([['HINCRBY', chaveVotos, jogador, 1]]);
+    await redis.hIncrBy(chaveVotos, jogador, 1);
 
-    return res.status(200).json({ ok: true, ...(await resultados(chaveVotos)) });
+    return res.status(200).json({ ok: true, ...(await resultados(redis, chaveVotos)) });
 
   } catch (erro) {
     console.error('Erro no MVP:', erro);
+    ligacao = null; // força nova ligação no próximo pedido
     return res.status(500).json({ ok: false, mensagem: 'Não foi possível votar. Tenta novamente.' });
   }
 };
