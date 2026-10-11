@@ -39,6 +39,31 @@ function converterData(texto) {
   return `${m[3]}-${meses[m[2]]}-${m[1].padStart(2, '0')}`;
 }
 
+// Devolve o URL do emblema de uma equipa (a <img> cujo alt é "Logo NOME").
+function logoDaEquipa(bloco, nome) {
+  for (const m of bloco.matchAll(/<img\b[^>]*>/giu)) {
+    const tag = m[0];
+    const alt = (tag.match(/alt=["']Logo\s+([^"']+)["']/i) || [])[1];
+
+    if (!alt || limparTexto(alt) !== nome) continue;
+
+    // imagens "lazy" guardam o endereço real em data-src
+    const src =
+      (tag.match(/data-src=["']([^"']+)["']/i) || [])[1] ||
+      (tag.match(/\bsrc=["']([^"']+)["']/i) || [])[1];
+
+    if (!src) return null;
+
+    try {
+      return new URL(decodeHTML(src), PAGINA_FPB).href;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  return null;
+}
+
 function processarJogos(html) {
   const cabecalhos = [
     ...html.matchAll(
@@ -131,6 +156,7 @@ function processarJogos(html) {
           : null,
         pontosCasa,
         pontosFora,
+        logo: logoDaEquipa(bloco, adversario),
         url: new URL(decodeHTML(href), PAGINA_FPB).href
       };
 
