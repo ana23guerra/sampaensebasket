@@ -70,7 +70,15 @@ function renderizarProximoJogo() {
   $('escudo-sampaense').innerHTML = `<img src="assets/logo.png" alt="">`;
   $('placar-competicao').textContent = proximoJogo.competicao;
   $('nome-adversario').textContent = proximoJogo.adversario;
-  $('escudo-adversario').textContent = iniciais(proximoJogo.adversario);
+  const escudoAdv = $('escudo-adversario');
+  escudoAdv.textContent = iniciais(proximoJogo.adversario);
+  if (proximoJogo.logo) {
+    const img = new Image();
+    img.alt = '';
+    img.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#fff;padding:4px;box-sizing:border-box;';
+    img.onload = () => { escudoAdv.textContent = ''; escudoAdv.appendChild(img); };
+    img.src = proximoJogo.logo;
+  }
   $('info-data').textContent = fmtDataLonga(proximoJogo.data);
   $('info-hora').textContent = fmtHora(proximoJogo.data) + 'h';
   $('info-local').textContent = proximoJogo.casa ? 'Casa' : 'Fora';
@@ -103,6 +111,10 @@ function renderizarForma() {
   }).join('');
 }
 
+const logoAdv = (j) => j.logo
+  ? `<img src="${j.logo}" alt="" width="22" height="22" loading="lazy" onerror="this.remove()" style="display:inline-block;width:22px;height:22px;object-fit:contain;background:#fff;border-radius:50%;vertical-align:middle;margin-right:6px;">`
+  : '';
+
 function criarLinhaJogo(j) {
   const pontosSamp = j.status === 'terminado' ? (j.casa ? j.pontosCasa : j.pontosFora) : null;
   const pontosAdv = j.status === 'terminado' ? (j.casa ? j.pontosFora : j.pontosCasa) : null;
@@ -115,9 +127,9 @@ function criarLinhaJogo(j) {
       <div class="jogo-data"><b>${fmtData(j.data)}</b><span>${new Date(j.data).getFullYear()}</span></div>
       <div>
         <div class="jogo-equipas">
-          <span>${j.casa ? 'Sampaense Basket' : j.adversario}</span>
+          <span>${j.casa ? 'Sampaense Basket' : logoAdv(j) + j.adversario}</span>
           <span style="color:var(--texto-suave); font-weight:500;">vs</span>
-          <span>${j.casa ? j.adversario : 'Sampaense Basket'}</span>
+          <span>${j.casa ? logoAdv(j) + j.adversario : 'Sampaense Basket'}</span>
           <span class="tag">${j.competicao}</span>
         </div>
       </div>
@@ -291,10 +303,19 @@ async function atualizarJogosFPB() {
 
       // A FPB passa a ter prioridade quando disponibiliza
       // o resultado final do jogo.
-      porJogo.set(chave, {
-        ...existente,
-        ...j
-      });
+      const novo = { ...existente, ...j };
+
+      // A FPB às vezes só traz o dia (T00:00): mantém a hora do dados.js
+      if (
+        existente &&
+        existente.data &&
+        (j.data || '').endsWith('T00:00') &&
+        !existente.data.endsWith('T00:00')
+      ) {
+        novo.data = existente.data;
+      }
+
+      porJogo.set(chave, novo);
     });
 
     jogosAtuais = Array.from(porJogo.values());
@@ -369,17 +390,26 @@ function criarCartaoJogador(j, i) {
     </div>`;
 }
 
+const ORDEM_POSICOES = ['Base', 'Extremo-Base', 'Extremo', 'Extremo-Poste', 'Poste'];
+
+// ignora maiúsculas, espaços a mais e a diferença entre "-" e "/"
+const normPos = (p) => (p || '').toLowerCase().replace(/\s*[-–—\/]\s*/g, '-').trim();
+
 function renderizarPlantel(posicaoAtual = 'Todos') {
   const jogadores = posicaoAtual === 'Todos'
     ? DADOS.plantel
-    : DADOS.plantel.filter(j => j.posicao === posicaoAtual);
+    : DADOS.plantel.filter(j => normPos(j.posicao) === normPos(posicaoAtual));
   $('lista-plantel').innerHTML = jogadores.length
     ? jogadores.map((j) => criarCartaoJogador(j, DADOS.plantel.indexOf(j))).join('')
     : '<p style="color:var(--texto-suave);">Sem jogadores para mostrar.</p>';
 }
 
 function montarFiltroPosicoes() {
-  const posicoes = ['Todos', ...new Set(DADOS.plantel.map(j => j.posicao).filter(Boolean))];
+  // um botão por posição, sempre pela mesma ordem, só das que existem no plantel
+  const existentes = ORDEM_POSICOES.filter(o =>
+    DADOS.plantel.some(j => normPos(j.posicao) === normPos(o))
+  );
+  const posicoes = ['Todos', ...existentes];
   $('filtro-posicao').innerHTML = posicoes.map((p, i) =>
     `<button class="${i === 0 ? 'ativa' : ''}" onclick="filtrarPlantel('${p}', this)">${p}</button>`
   ).join('');
