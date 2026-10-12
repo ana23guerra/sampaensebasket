@@ -29,6 +29,11 @@ const FONTES = [
     nome: 'Record',
     categoria: 'Record',
     query: 'site:record.pt "Sampaense Basket"'
+  },
+  {
+    nome: 'Correio da Beira Serra',
+    categoria: 'Correio da Beira Serra',
+    query: 'site:correiodabeiraserra.pt "Sampaense" OR "Sampaense Basket"'
   }
 ];
 
