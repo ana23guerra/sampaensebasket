@@ -715,6 +715,13 @@ section + section { border-top: 1px solid var(--linha); }
 .jogador:hover { transform: translateY(-3px); }
 .jogador:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
 .jogador .ver-ficha { margin-top: 8px; font-size: 12px; font-weight: 800; color: var(--verde); }
+.jogador .medias {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--linha);
+}
+.jogador .medias span { display: block; font-family: 'Anton', sans-serif; font-size: 18px; line-height: 1.1; color: var(--verde); }
+.jogador .medias b { display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; color: var(--texto-suave); }
+.jogador-medias h4 { margin: 24px 0 12px; font-size: 13px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--roxo); }
 
 #modal-jogador {
   position: fixed; inset: 0; background: rgba(10,10,6,0.72); display: none;

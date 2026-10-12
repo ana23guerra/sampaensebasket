@@ -379,6 +379,24 @@ function criarAvatarJogador(j, classeExtra = '') {
   return `<div class="avatar ${classeExtra}">${iniciais(j.nome)}</div>`;
 }
 
+// Médias por jogo, geradas por api/player_scraping.py (estatisticas.json).
+// Chave: nome tal como aparece na tugabasket.
+let ESTATISTICAS = {};
+const normNome = (n) => (n || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const estatisticasDe = (j) => ESTATISTICAS[normNome(j.nomeStats || j.nome)];
+const fmtMedia = (v) => (typeof v === 'number' ? v.toFixed(1) : '-');
+
+function criarMediasCartao(j) {
+  const e = estatisticasDe(j);
+  if (!e) return '';
+  return `
+      <div class="medias">
+        <div><span>${fmtMedia(e.Pts)}</span><b>PTS</b></div>
+        <div><span>${fmtMedia(e.RT)}</span><b>RES</b></div>
+        <div><span>${fmtMedia(e.AS)}</span><b>AST</b></div>
+      </div>`;
+}
+
 function criarCartaoJogador(j, i) {
   return `
     <div class="jogador" tabindex="0" role="button" onclick="abrirJogador(${i})" onkeydown="if(event.key==='Enter')abrirJogador(${i})">
@@ -386,8 +404,25 @@ function criarCartaoJogador(j, i) {
       ${criarAvatarJogador(j)}
       <h3>${escaparHTML(j.nome)}${j.capitao ? ' (C)' : ''}</h3>
       <div class="posicao">${escaparHTML(j.posicao || '')}</div>
+      ${criarMediasCartao(j)}
       <div class="ver-ficha">Ver ficha →</div>
     </div>`;
+}
+
+async function carregarEstatisticas() {
+  try {
+    const resposta = await fetch('/estatisticas.json', { cache: 'no-store' });
+    if (!resposta.ok) throw new Error('Erro HTTP ' + resposta.status);
+    const dados = await resposta.json();
+    ESTATISTICAS = {};
+    for (const [nome, e] of Object.entries(dados.jogadores || {})) {
+      ESTATISTICAS[normNome(nome)] = e;
+    }
+    renderizarPlantel(posicaoAtiva);
+  } catch (erro) {
+    // sem estatísticas os cartões continuam como estavam
+    console.warn('Estatísticas indisponíveis:', erro);
+  }
 }
 
 const ORDEM_POSICOES = ['Base', 'Extremo-Base', 'Extremo', 'Extremo-Poste', 'Poste'];
@@ -395,7 +430,10 @@ const ORDEM_POSICOES = ['Base', 'Extremo-Base', 'Extremo', 'Extremo-Poste', 'Pos
 // ignora maiúsculas, espaços a mais e a diferença entre "-" e "/"
 const normPos = (p) => (p || '').toLowerCase().replace(/\s*[-–—\/]\s*/g, '-').trim();
 
+let posicaoAtiva = 'Todos';
+
 function renderizarPlantel(posicaoAtual = 'Todos') {
+  posicaoAtiva = posicaoAtual;
   const jogadores = posicaoAtual === 'Todos'
     ? DADOS.plantel
     : DADOS.plantel.filter(j => normPos(j.posicao) === normPos(posicaoAtual));
@@ -424,6 +462,7 @@ function filtrarPlantel(posicao, botao) {
 if (DADOS.plantel && DADOS.plantel.length) {
   montarFiltroPosicoes();
   renderizarPlantel();
+  carregarEstatisticas();
 }
 
 function abrirJogador(i) {
@@ -444,6 +483,25 @@ function abrirJogador(i) {
   $('modal-jogador-dados').innerHTML = campos.map(([rotulo, valor]) => `
     <div><b>${rotulo}</b>${valor ? `<span>${escaparHTML(valor)}</span>` : DADO_VAZIO}</div>
   `).join('');
+
+  const e = estatisticasDe(j);
+  const medias = e ? [
+    ['Jogos', e.Jg],
+    ['Minutos', fmtMedia(e.Min)],
+    ['Pontos', fmtMedia(e.Pts)],
+    ['Ressaltos', fmtMedia(e.RT)],
+    ['Assistências', fmtMedia(e.AS)],
+    ['Roubos de bola', fmtMedia(e.RB)],
+    ['% 2 pontos', fmtMedia(e['%2P'])],
+    ['% 3 pontos', fmtMedia(e['%3P'])],
+    ['% Lances livres', fmtMedia(e['%TL'])],
+    ['Valorização', fmtMedia(e.VAL)]
+  ] : [];
+  $('modal-jogador-medias').innerHTML = medias.length ? `
+    <h4>Médias por jogo</h4>
+    <div class="jogador-dados">${medias.map(([rotulo, valor]) => `
+      <div><b>${rotulo}</b><span>${valor}</span></div>`).join('')}
+    </div>` : '';
 
   $('modal-jogador').classList.add('aberto');
 }

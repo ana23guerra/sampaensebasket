@@ -40,13 +40,15 @@ const DADOS = {
   // Ficha de cada jogador (abre ao clicar no cartão). Campos opcionais:
   // nacionalidade, origem (de onde vem), ultimoClube, altura (ex.: "1,95 m"),
   // Os que ficarem vazios aparecem como "Por confirmar".
+  // CAMPO "nomeStats": nome tal como aparece nas estatísticas da tugabasket
+  // (estatisticas.json), só quando é diferente de "nome".
 plantel: [
 
   { numero: "2", nome: "Markus Terry", posicao: "Base", foto: "assets/jogadores/markus.webp", nacionalidade: "Americana", origem: "Johns Creek", ultimoClube: "Sampaense Basket", altura: "188cm" },
 
   { numero: "3", nome: "Tiago Espada", posicao: "Base", foto: "assets/jogadores/espada.webp", nacionalidade: "Portuguesa", origem: "Figueira da Foz", ultimoClube: "Ginásio Clube Figueirense", altura: "178cm" },
 
-  { numero: "5", nome: "Tay Hall", posicao: "Poste", foto: "assets/jogadores/tay.webp", nacionalidade: "Americana", origem: "Atlanta", ultimoClube: "Sampaense Basket", altura: "195cm" },
+  { numero: "5", nome: "Tay Hall", nomeStats: "Demariontay Hall", posicao: "Poste", foto: "assets/jogadores/tay.webp", nacionalidade: "Americana", origem: "Atlanta", ultimoClube: "Sampaense Basket", altura: "195cm" },
 
   { numero: "6", nome: "Afonso Silva", posicao: "Extremo-base", foto: "assets/jogadores/silva.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "180cm" },
 
@@ -56,11 +58,11 @@ plantel: [
 
   { numero: "9", nome: "Adam Nongo", posicao: "Poste", foto: "assets/jogadores/nongo.webp", nacionalidade: "Congolês", origem: "Congo", ultimoClube: "ABA", altura: "198cm" },
 
-  { numero: "11", nome: "Modou Mbop", posicao: "Poste", foto: "assets/jogadores/modou.webp", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
+  { numero: "11", nome: "Modou Mbop", nomeStats: "Modou Mboup", posicao: "Poste", foto: "assets/jogadores/modou.webp", nacionalidade: "Senegalês", origem: "Senegal", ultimoClube: "ABA", altura: "204cm" },
 
   { numero: "12", nome: "Pedro Abrantes", posicao: "Extremo-base", foto: "assets/jogadores/pedro.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "175cm" },
 
-  { numero: "13", nome: "Jahlin Smith", posicao: "Extremo-Poste", foto: "assets/jogadores/jay.webp", nacionalidade: "Americana", origem: "Barnwell", ultimoClube: "Delta Gurjaani", altura: "201cm" },
+  { numero: "13", nome: "Jahlin Smith", nomeStats: "Hahlin Smith", posicao: "Extremo-Poste", foto: "assets/jogadores/jay.webp", nacionalidade: "Americana", origem: "Barnwell", ultimoClube: "Delta Gurjaani", altura: "201cm" },
 
   { numero: "80", nome: "Afonso Pereira", posicao: "Base", foto: "assets/jogadores/pereira.webp", nacionalidade: "Portuguesa", origem: "Oliveira do Hospital", ultimoClube: "Sampaense Basket", altura: "178cm" },
 
