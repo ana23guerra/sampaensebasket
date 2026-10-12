@@ -34,6 +34,9 @@
     "americana": "American", "portuguesa": "Portuguese", "congolês": "Congolese", "senegalês": "Senegalese",
     "geórgia": "Georgia", "nova york": "New York", "lisboa": "Lisbon",
     "fechar": "Close", "fechar ✕": "Close ✕",
+    "res": "REB", "médias por jogo": "Per-game averages", "minutos": "Minutes",
+    "pontos": "Points", "ressaltos": "Rebounds", "assistências": "Assists", "roubos de bola": "Steals",
+    "% 2 pontos": "2PT %", "% 3 pontos": "3PT %", "% lances livres": "FT %", "valorização": "Efficiency",
 
     // formação
     "horários da formação": "Youth training schedule",
