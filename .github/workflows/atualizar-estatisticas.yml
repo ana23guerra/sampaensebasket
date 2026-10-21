@@ -4,7 +4,7 @@ name: Atualizar estatisticas
 
 on:
   schedule:
-    - cron: "0 6 * * *"   # every day at 06:00 UTC
+    - cron: "59 23 * * 0" # every Sunday at 23:59 UTC
   workflow_dispatch:       # "Run workflow" button in the Actions tab
 
 permissions:
