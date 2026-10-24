@@ -139,8 +139,8 @@
     } else {
       meio = `<div class="mvp-podio">${podioHtml(res, !aberto)}</div>`;
       acao = aberto
-        ? `<span class="mvp-obrigado">Já votaste. Obrigado!</span><span class="mvp-total">${textoVotos(res.total)}</span>`
-        : `<span class="mvp-total">${textoVotos(res.total)}</span>`;
+        ? `<span class="mvp-obrigado">Já votaste. Obrigado!</span>`
+        : ` `;
     }
 
     caixa.className = 'mvp-caixa';
