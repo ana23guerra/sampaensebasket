@@ -223,7 +223,7 @@ noticias: [
     },
     {
       nome: "Mota Seguros",
-      logo: "assets/parceiros/mota.png",
+      logo: "assets/parceiros/mota.jpeg",
       url: "https://www.facebook.com/motaseguros/locale/pt_PT"
     },
     {
