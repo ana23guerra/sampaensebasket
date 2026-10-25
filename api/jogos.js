@@ -223,3 +223,7 @@ module.exports = async function handler(req, res) {
     });
   }
 };
+
+// Usado por .github/scripts/verificar-jogo.js (workflow das estatísticas).
+module.exports.PAGINA_FPB = PAGINA_FPB;
+module.exports.processarJogos = processarJogos;

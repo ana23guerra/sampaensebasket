@@ -1,11 +1,20 @@
-# Runs api/player_scraping.py on a schedule and commits estatisticas.json.
+# Runs api/player_scraping.py after each game and commits estatisticas.json.
+# Every hour on weekends, .github/scripts/verificar-jogo.js checks the FPB page (same parser
+# as api/jogos.js) for a finished game that isn't in .github/estado-estatisticas.json.
+# If there is one, the scraper runs; the game is marked as done once the stats
+# change (or after 3 days, if they never do). Until then it retries every hour.
 # Vercel's Git integration redeploys the site on every push to main.
 name: Atualizar estatisticas
 
 on:
   schedule:
-    - cron: "59 23 * * 0" # every Sunday at 23:59 UTC
+    - cron: "15 * * * 6,0" # every hour on Saturday and Sunday (UTC); exits early unless a new game has ended
   workflow_dispatch:       # "Run workflow" button in the Actions tab
+    inputs:
+      forcar:
+        description: "Run the scraper even if no new game has ended"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -20,28 +29,57 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check for a finished game
+        id: jogo
+        env:
+          FORCAR: ${{ inputs.forcar }}
+        run: node .github/scripts/verificar-jogo.js
+
       - uses: actions/setup-python@v5
+        if: steps.jogo.outputs.correr == 'true'
         with:
           python-version: "3.12"
 
       - name: Install dependencies
+        if: steps.jogo.outputs.correr == 'true'
         run: pip install requests pandas beautifulsoup4 lxml python-dotenv
 
       - name: Run scraper
+        if: steps.jogo.outputs.correr == 'true'
         env:
           basketapi_user: ${{ secrets.BASKETAPI_USER }}
           basketapi_pass: ${{ secrets.BASKETAPI_PASS }}
         run: python api/player_scraping.py < /dev/null
 
       - name: Commit and push if the stats changed
+        if: steps.jogo.outputs.correr == 'true'
+        env:
+          JOGO: ${{ steps.jogo.outputs.jogo }}
+          EXPIRADO: ${{ steps.jogo.outputs.expirado }}
         run: |
           # Ignore the "atualizado" timestamp so we only push when the numbers change
           if git diff --quiet -I '"atualizado"' -- estatisticas.json; then
+            if [ "$EXPIRADO" != "true" ]; then
+              echo "Stats not updated yet; retrying next hour."
+              exit 0
+            fi
+            echo "Stats never changed for this game; marking it as done."
+            git checkout -- estatisticas.json
+          fi
+          if [ -n "$JOGO" ]; then
+            printf '{\n  "ultimoJogo": "%s"\n}\n' "$JOGO" > .github/estado-estatisticas.json
+          fi
+          git add estatisticas.json .github/estado-estatisticas.json
+          if git diff --cached --quiet; then
             echo "No changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add estatisticas.json
           git commit -m "Atualizar estatisticas ($(date -u +%Y-%m-%d))"
+          git pull --rebase
           git push
