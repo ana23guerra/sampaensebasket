@@ -57,7 +57,6 @@
     const r = await fetch('/api/mvp?jogo=' + id + '&t=' + Date.now());
     return r.json();
   }
-  const textoVotos = (n) => (n === 1 ? '1 voto' : n + ' votos');
 
   // ---- Peças do cartão ----
   function linhaJogo(j) {
@@ -99,7 +98,10 @@
   }
 
   // ---- Desenhar o cartão ----
+  let ultimaChamada = 0;
+
   async function desenhar() {
+    const minha = ++ultimaChamada;
     const caixa = el('mvp-caixa');
     const jogo = jogoMaisRecente();
     const inicio = jogo ? new Date(jogo.data).getTime() : 0;
@@ -111,6 +113,7 @@
 
     let res = null;
     if (jogo && (votou || !aberto)) { try { res = await pedir(id); } catch (e) {} }
+    if (minha !== ultimaChamada) return; // entretanto já houve um desenho mais recente
     const haVotos = !!(res && res.total);
 
     // 1) Sem votação para mostrar: "em breve"
@@ -140,7 +143,7 @@
       meio = `<div class="mvp-podio">${podioHtml(res, !aberto)}</div>`;
       acao = aberto
         ? `<span class="mvp-obrigado">Já votaste. Obrigado!</span>`
-        : ` `;
+        : '';
     }
 
     caixa.className = 'mvp-caixa';
