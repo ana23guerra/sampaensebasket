@@ -25,11 +25,8 @@ const DADOS = {
   // (Campeonato da Proliga 2026/2027 - Sénior) em 24/09/2026. A página da
  
   jogos: [
-    { status: "terminado", data: "2026-09-27T00:00", adversario: "União de Leiria", casa: false, competicao: "V Torneio AB Coimbra", pontosCasa: 44, pontosFora: 94 },
-    { status: "terminado", data: "2026-10-10T16:30", adversario: "Sangalhos DC / CRB", casa: true, competicao: "Proliga 2026/2027 · Jornada 2", pontosCasa: 85, pontosFora: 80 },
-    { status: "agendado", data: "2026-10-10T16:30", adversario: "Sangalhos DC / CRB", casa: true, competicao: "Proliga 2026/2027 · Jornada 2" },
-    { status: "agendado", data: "2026-10-18T15:00", adversario: "SL Benfica B", casa: false, competicao: "Proliga 2026/2027 · Jornada 3", local: "Pavilhão Fidelidade, Lisboa" },
-    { status: "agendado", data: "2026-10-24T16:30", adversario: "Illiabum Clube Margres", casa: true, competicao: "Proliga 2026/2027 · Jornada 4" }
+    // Só o torneio (a FPB não o tem). Os jogos da Proliga vêm automaticamente da FPB.
+    { status: "terminado", data: "2026-09-27T00:00", adversario: "União de Leiria", casa: false, competicao: "V Torneio AB Coimbra", pontosCasa: 44, pontosFora: 94 }
   ],
 
   // Plantel sénior masculino 2026/2027. Números e posições confirmados
@@ -224,7 +221,7 @@ noticias: [
     {
       nome: "Mota Seguros",
       logo: "assets/parceiros/mota.jpeg",
-      url: "https://www.facebook.com/motaseguros/locale/pt_PT"
+      url: "https://www.facebook.com/motaseguros/?locale=pt_PT"
     },
     {
       nome: "JMF Portões e Automatismos",

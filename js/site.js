@@ -41,13 +41,29 @@ let abaJogosAtiva = 'proximos';
 const LIMITE_JOGOS_VISIVEIS = 4;
 let intervaloContagem;
 
+// Um jogo conta como "acabado" 3h depois da hora de início
+const DURACAO_JOGO_MS = 3 * 3600000;
+const jogoJaPassou = (j) => !!j.data && new Date(j.data).getTime() + DURACAO_JOGO_MS < Date.now();
+
+// Já existe um jogo terminado "gémeo" deste (mesma condição casa/fora, no mesmo fim de semana)?
+// Acontece quando o nome do adversário vem escrito de forma diferente no dados.js e na FPB.
+const temResultadoGemeo = (j) => jogosAtuais.some(t =>
+  t !== j && t.status === 'terminado' && Boolean(t.casa) === Boolean(j.casa) &&
+  Math.abs(new Date(t.data) - new Date(j.data)) < 36 * 3600000);
+
 function jogosOrdenados() {
   return {
+    // só jogos agendados que ainda não aconteceram
     proximos: jogosAtuais
-      .filter(j => j.status === 'agendado')
+      .filter(j => j.status === 'agendado' && !jogoJaPassou(j))
       .sort((a, b) => new Date(a.data) - new Date(b.data)),
+    // jogos com resultado final
     terminados: jogosAtuais
       .filter(j => j.status === 'terminado')
+      .sort((a, b) => new Date(b.data) - new Date(a.data)),
+    // já se jogaram mas o resultado ainda não chegou (FPB / dados.js)
+    porConfirmar: jogosAtuais
+      .filter(j => j.status === 'agendado' && jogoJaPassou(j) && !temResultadoGemeo(j))
       .sort((a, b) => new Date(b.data) - new Date(a.data))
   };
 }
@@ -121,7 +137,9 @@ function criarLinhaJogo(j) {
   const venceu = pontosSamp !== null && pontosSamp > pontosAdv;
   const resultadoHtml = j.status === 'terminado'
     ? `<span class="jogo-resultado ${venceu ? 'vitoria' : ''}">${j.pontosCasa} – ${j.pontosFora}</span>`
-    : `<span class="jogo-resultado" style="color:var(--texto-suave); font-size:15px;">${fmtHora(j.data)}h</span>`;
+    : (jogoJaPassou(j)
+      ? `<span class="jogo-resultado" style="color:var(--texto-suave); font-size:15px;">Por confirmar</span>`
+      : `<span class="jogo-resultado" style="color:var(--texto-suave); font-size:15px;">${fmtHora(j.data)}h</span>`);
   return `
     <div class="jogo-linha">
       <div class="jogo-data"><b>${fmtData(j.data)}</b><span>${new Date(j.data).getFullYear()}</span></div>
@@ -141,8 +159,8 @@ function criarLinhaJogo(j) {
 }
 
 function renderizarListaJogos() {
-  const { proximos, terminados } = jogosOrdenados();
-  const jogosFiltrados = abaJogosAtiva === 'proximos' ? proximos : terminados;
+  const { proximos, terminados, porConfirmar } = jogosOrdenados();
+  const jogosFiltrados = abaJogosAtiva === 'proximos' ? proximos : [...porConfirmar, ...terminados];
   const pista = $('lista-jogos');
 
   // Prepara o carrossel (só uma vez): pista + controlos por baixo
@@ -288,8 +306,20 @@ async function atualizarJogosFPB() {
     dados.jogos.forEach(j => {
       if (!j.data || !j.adversario) return;
 
-      const chave = chaveJogo(j);
-      const existente = porJogo.get(chave);
+      let chave = chaveJogo(j);
+      let existente = porJogo.get(chave);
+
+      // Nome do adversário escrito de forma diferente (dados.js vs FPB)?
+      // Procura o mesmo dia e a mesma condição (casa/fora) para não duplicar o jogo.
+      if (!existente) {
+        const dia = (j.data || '').slice(0, 10);
+        const candidatos = [...porJogo.entries()].filter(([, e]) =>
+          (e.data || '').slice(0, 10) === dia && Boolean(e.casa) === Boolean(j.casa));
+        if (candidatos.length === 1) {
+          porJogo.delete(candidatos[0][0]);
+          existente = candidatos[0][1];
+        }
+      }
 
       // Se a FPB ainda não tem resultado, preserva um resultado
       // final introduzido manualmente.
