@@ -3,12 +3,15 @@
 # as api/jogos.js) for a finished game that isn't in .github/estado-estatisticas.json.
 # If there is one, the scraper runs; the game is marked as done once the stats
 # change (or after 3 days, if they never do). Until then it retries every hour.
+# Box scores are often corrected after the game, so a daily run also re-scrapes
+# for 7 days after the last game; it only commits if the numbers changed.
 # Vercel's Git integration redeploys the site on every push to main.
 name: Atualizar estatisticas
 
 on:
   schedule:
     - cron: "15 * * * 6,0" # every hour on Saturday and Sunday (UTC); exits early unless a new game has ended
+    - cron: "45 6 * * *"   # daily re-check for box-score corrections (keep in sync with REVER below)
   workflow_dispatch:       # "Run workflow" button in the Actions tab
     inputs:
       forcar:
@@ -37,6 +40,7 @@ jobs:
         id: jogo
         env:
           FORCAR: ${{ inputs.forcar }}
+          REVER: ${{ github.event.schedule == '45 6 * * *' }}
         run: node .github/scripts/verificar-jogo.js
 
       - uses: actions/setup-python@v5

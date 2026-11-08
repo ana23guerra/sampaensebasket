@@ -11,6 +11,10 @@ const { PAGINA_FPB, processarJogos } = require('../../api/jogos.js');
 
 const ESTADO = path.join(__dirname, '..', 'estado-estatisticas.json');
 const DIAS_LIMITE = 3;
+// Depois de um jogo, a tugabasket corrige muitas vezes as fichas nos dias
+// seguintes. Durante este período o scraper volta a correr uma vez por dia
+// (execução diária do workflow, REVER=true) para apanhar essas correções.
+const DIAS_REVER = 7;
 
 function lerEstado() {
   try {
@@ -30,6 +34,7 @@ function saida(chave, valor) {
 
 async function main() {
   const forcar = process.env.FORCAR === 'true';
+  const rever = process.env.REVER === 'true';
   let jogos = [];
 
   try {
@@ -65,8 +70,12 @@ async function main() {
   const novo = ultimo.url !== lerEstado().ultimoJogo;
   const dias = (Date.now() - Date.parse(ultimo.data.slice(0, 10))) / 86400000;
 
+  // Revisão diária: o jogo já foi recolhido, mas a ficha ainda pode ser corrigida.
+  const revisao = rever && !novo && dias <= DIAS_REVER;
+
   console.log(`Último jogo terminado: ${ultimo.data.slice(0, 10)} vs ${ultimo.adversario}`);
-  saida('correr', String(novo || forcar));
+  if (revisao) console.log(`Revisão: a voltar a recolher (jogo há ${dias.toFixed(1)} dias).`);
+  saida('correr', String(novo || forcar || revisao));
   saida('jogo', ultimo.url);
   saida('expirado', String(dias > DIAS_LIMITE));
 }
