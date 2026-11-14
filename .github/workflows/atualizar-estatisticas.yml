@@ -30,11 +30,11 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Check for a finished game
         id: jogo
@@ -43,7 +43,7 @@ jobs:
           REVER: ${{ github.event.schedule == '45 6 * * *' }}
         run: node .github/scripts/verificar-jogo.js
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.jogo.outputs.correr == 'true'
         with:
           python-version: "3.12"
