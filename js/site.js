@@ -84,7 +84,7 @@ function renderizarProximoJogo() {
   if (placar) placar.style.display = '';
 
   $('escudo-sampaense').innerHTML = `<img src="assets/logo.png" alt="">`;
-  $('placar-competicao').textContent = proximoJogo.competicao;
+  $('placar-competicao').textContent = '';
   $('nome-adversario').textContent = proximoJogo.adversario;
   const escudoAdv = $('escudo-adversario');
   escudoAdv.textContent = iniciais(proximoJogo.adversario);
@@ -116,6 +116,9 @@ function renderizarProximoJogo() {
 }
 
 function renderizarForma() {
+  const blocoForma = document.querySelector('.forma');
+  if (blocoForma) blocoForma.style.display = 'none';
+  return;
   const { terminados } = jogosOrdenados();
   const ultimos = terminados.slice(0, 5);
 
@@ -148,7 +151,6 @@ function criarLinhaJogo(j) {
           <span>${j.casa ? 'Sampaense Basket' : logoAdv(j) + j.adversario}</span>
           <span style="color:var(--texto-suave); font-weight:500;">vs</span>
           <span>${j.casa ? logoAdv(j) + j.adversario : 'Sampaense Basket'}</span>
-          <span class="tag">${j.competicao}</span>
         </div>
       </div>
       <div style="text-align:right;">
