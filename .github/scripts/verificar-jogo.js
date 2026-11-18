@@ -50,8 +50,20 @@ async function main() {
     }
 
     jogos = processarJogos(await resposta.text());
+
+    // A página da equipa tem sempre o calendário da época. Zero jogos quer
+    // dizer que a FPB mudou o HTML e o parser de api/jogos.js deixou de funcionar.
+    if (jogos.length === 0) {
+      throw new Error('O parser não encontrou nenhum jogo (o HTML da FPB pode ter mudado)');
+    }
   } catch (erro) {
-    // Não falhar o workflow: tenta-se outra vez na próxima hora.
+    // Nas execuções de hora a hora não se falha o workflow: uma falha pontual
+    // da FPB resolve-se na hora seguinte. Na execução diária (REVER) falha-se,
+    // para que um problema persistente apareça a vermelho e envie um email.
+    if (rever) {
+      console.log(`::error::Não foi possível consultar a FPB: ${erro.message}`);
+      process.exit(1);
+    }
     console.log(`::warning::Não foi possível consultar a FPB: ${erro.message}`);
   }
 

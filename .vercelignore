@@ -1,0 +1,5 @@
+# Files used only by GitHub Actions / tests; keep them out of the Vercel deploy.
+# (requirements.txt would otherwise make Vercel install pandas etc. for api/*.py)
+requirements.txt
+test/
+docs/

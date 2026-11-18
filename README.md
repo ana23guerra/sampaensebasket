@@ -142,3 +142,25 @@ python api/player_scraping.py
 As credenciais são lidas de `basketapi_user` e `basketapi_pass` num ficheiro
 `.env` (na raiz ou em `api/`). Se não existirem, o script pede-as no
 terminal. O `.env` está no `.gitignore` e nunca deve ir para o repositório.
+
+## Testes e CI
+
+- `npm test` testa o parser da FPB (`api/jogos.js`) com uma cópia guardada da
+  página em `test/fixtures/fpb-equipa.html`. Se a FPB mudar o HTML, atualizar a
+  cópia (comando no topo de `test/jogos.test.js`) e corrigir o parser.
+- `python .github/scripts/validar_estatisticas.py` verifica `estatisticas.json`.
+  O workflow de estatísticas corre-o antes de cada commit, por isso dados
+  estragados nunca chegam ao `main` nem ao site.
+- O workflow `CI` (`.github/workflows/ci.yml`) corre os dois em cada push e pull request.
+- O Dependabot propõe atualizações das dependências uma vez por mês.
+
+### Início de cada época
+
+1. Atualizar as variáveis do repositório `COMPETICAO_ID` e `EQUIPA_ID`
+   (Settings → Secrets and variables → Actions → Variables).
+2. Confirmar no separador Actions que o workflow "Atualizar estatisticas" está
+   ativo: o GitHub desativa workflows agendados após 60 dias sem atividade no
+   repositório, o que pode acontecer no defeso. Para reativar:
+   `gh workflow enable atualizar-estatisticas.yml`
+
+O que mudou na automação e porquê: [docs/ci-cd-changes.md](docs/ci-cd-changes.md).

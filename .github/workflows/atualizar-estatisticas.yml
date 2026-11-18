@@ -5,7 +5,11 @@
 # change (or after 3 days, if they never do). Until then it retries every hour.
 # Box scores are often corrected after the game, so a daily run also re-scrapes
 # for 7 days after the last game; it only commits if the numbers changed.
+# The scraped file is validated before committing, so bad data never reaches main.
 # Vercel's Git integration redeploys the site on every push to main.
+#
+# Season settings live in repository variables (Settings > Secrets and variables >
+# Actions > Variables): COMPETICAO_ID and EQUIPA_ID. The scraper has defaults if unset.
 name: Atualizar estatisticas
 
 on:
@@ -29,10 +33,12 @@ concurrency:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      # Actions are pinned to commit SHAs; Dependabot keeps them up to date.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: "24"
 
@@ -43,21 +49,28 @@ jobs:
           REVER: ${{ github.event.schedule == '45 6 * * *' }}
         run: node .github/scripts/verificar-jogo.js
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         if: steps.jogo.outputs.correr == 'true'
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install dependencies
         if: steps.jogo.outputs.correr == 'true'
-        run: pip install requests pandas beautifulsoup4 lxml python-dotenv
+        run: pip install -r requirements.txt
 
       - name: Run scraper
         if: steps.jogo.outputs.correr == 'true'
         env:
           basketapi_user: ${{ secrets.BASKETAPI_USER }}
           basketapi_pass: ${{ secrets.BASKETAPI_PASS }}
+          COMPETICAO_ID: ${{ vars.COMPETICAO_ID }}
+          EQUIPA_ID: ${{ vars.EQUIPA_ID }}
         run: python api/player_scraping.py < /dev/null
+
+      - name: Validate stats
+        if: steps.jogo.outputs.correr == 'true'
+        run: python .github/scripts/validar_estatisticas.py
 
       - name: Commit and push if the stats changed
         if: steps.jogo.outputs.correr == 'true'
